@@ -1,0 +1,191 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #211D54;
+    border-radius: 8px;
+    width: 780px;
+    height: 520px;
+    overflow-y: auto;
+    position: relative;
+    padding: 1.5rem;
+    color: white;
+}
+
+
+.close-button {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    transition: background-color 0.2s;
+}
+
+.close-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+
+.modal-body {
+    margin-top: 1rem;
+    display: flex;
+    font-family: 'Lato', sans-serif;
+    font-size: 18px; 
+    font-weight: 500;
+    gap: 2rem;
+}
+
+
+.image-upload-container {
+    width: 300px; 
+    height: 450px; 
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+
+.image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    object-fit: cover;
+}
+
+.image-placeholder input[type="file"] {
+    display: none;
+}
+
+.image-placeholder label {
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+}
+
+.image-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.details-section {
+    flex: 1;
+    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+
+.input-group input, 
+.cast-member input {
+    height: 30px; 
+    padding: 2px 6px; 
+    font-size: 0.8rem; 
+    border-radius: 3px; 
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+
+.cast-member {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.cast-member input {
+
+    flex: 1;
+    padding: 0.2rem;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.remove-cast {
+
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    font-size: 0.8rem;
+ 
+    padding: 0.2rem 0.5rem;
+}
+
+.add-cast-button {
+
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 2rem;
+    padding: 0.3rem 0.3rem; 
+    font-size: 0.7rem;
+   
+}
+
+.modal-footer {
+    position: absolute;
+    margin-right:2rem ;
+    bottom: 2rem;
+    right: 0;
+    display: flex;
+    gap: 2rem;
+}
+
+.cancel-button, .save-button {
+    padding: 1rem 1.5rem; 
+    font-size: 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.cancel-button {
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+}
+
+.save-button {
+    background-color: #635CC3;
+    border: none;
+    color: white;
+}
+
+.save-button:hover {
+    background-color: #524ba3;
+}

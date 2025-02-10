@@ -133,30 +133,3 @@ nav ul li a:hover {
   
 }
 
-/*------------------------------------------------------------------------------*/
-.name span {
-  color: #4dc6ff;
-}
-
-.header-btn, .pr-btn {
-  background-color: #4dc6ff;
-  box-shadow: 5px 10px 30px rgba(77, 198, 255, 0.5);
-  border-radius: 5px;
-  color: #ffffff;
-}
-
-.header-btn:hover, .pr-btn:hover {
-  background-color: transparent;
-  color: #ffffff;
-  border: 2px solid #4dc6ff;
-}
-
-.a-box:hover {
-  border: 1px solid #4dc6ff;
-  box-shadow: 2px 2px 12px rgba(77, 198, 255, 0.5);
-}
-
-#contact form input[type="submit"] {
-  background: linear-gradient(90deg, #4dc6ff 20%, #574b90);
-}
-

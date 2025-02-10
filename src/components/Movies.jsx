@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiFilter, FiPlus } from 'react-icons/fi';
+import { FiFilter } from 'react-icons/fi';
+import { IoMdAdd } from "react-icons/io";
 import './Movies.css';
+import AddMovieModal from './AddMovieModal';
 
 const Movies = () => {
     const navigate = useNavigate();
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         const token = localStorage.getItem('accessToken');
@@ -18,6 +21,66 @@ const Movies = () => {
 
         // For testing purposes, using mock data
         const mockMovies = [
+            {
+                id: 1,
+                title: "The Shawshank Redemption",
+                genre: "Drama",
+                duration: "2h 22min"
+            },
+            {
+                id: 2,
+                title: "The Godfather",
+                genre: "Crime",
+                duration: "2h 55min"
+            },
+            {
+                id: 3,
+                title: "The Dark Knight",
+                genre: "Action",
+                duration: "2h 32min"
+            },
+            {
+                id: 4,
+                title: "Pulp Fiction",
+                genre: "Crime",
+                duration: "2h 34min"
+            },
+            {
+                id: 5,
+                title: "Inception",
+                genre: "Sci-Fi",
+                duration: "2h 28min"
+            },
+            {
+                id: 1,
+                title: "The Shawshank Redemption",
+                genre: "Drama",
+                duration: "2h 22min"
+            },
+            {
+                id: 2,
+                title: "The Godfather",
+                genre: "Crime",
+                duration: "2h 55min"
+            },
+            {
+                id: 3,
+                title: "The Dark Knight",
+                genre: "Action",
+                duration: "2h 32min"
+            },
+            {
+                id: 4,
+                title: "Pulp Fiction",
+                genre: "Crime",
+                duration: "2h 34min"
+            },
+            {
+                id: 5,
+                title: "Inception",
+                genre: "Sci-Fi",
+                duration: "2h 28min"
+            },
             {
                 id: 1,
                 title: "The Shawshank Redemption",
@@ -100,8 +163,12 @@ const Movies = () => {
     };
 
     const handleAddMovie = () => {
-        // Implement add movie functionality
-        console.log('Add movie clicked');
+        setIsModalOpen(true);
+    };
+
+    const handleSaveMovie = (movieData) => {
+        console.log('Saving movie:', movieData);
+        setIsModalOpen(false);
     };
 
     if (loading) {
@@ -120,7 +187,7 @@ const Movies = () => {
     return (
         <div className="movies-container">
             <nav className="top-nav">
-                <div className="nav-logo">
+                <div className="logo">
                     <span>screenify</span>
                 </div>
                 <ul className="nav-links">
@@ -137,11 +204,11 @@ const Movies = () => {
                 <div className="movies-header">
                     <h1>List of Movies</h1>
                     <div className="header-buttons">
-                        <button className="icon-button" onClick={handleFilterClick}>
-                            <FiFilter />
-                        </button>
                         <button className="icon-button" onClick={handleAddMovie}>
-                            <FiPlus />
+                            <IoMdAdd strokeWidth={12}/>
+                        </button>
+                        <button className="icon-button" onClick={handleFilterClick}>
+                            <FiFilter strokeWidth={2} />
                         </button>
                     </div>
                 </div>
@@ -171,6 +238,11 @@ const Movies = () => {
                     </table>
                 </div>
             </div>
+            <AddMovieModal 
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onSave={handleSaveMovie}
+            />
         </div>
     );
 };
