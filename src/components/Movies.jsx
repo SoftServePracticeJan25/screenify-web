@@ -4,13 +4,21 @@ import { FiFilter } from 'react-icons/fi';
 import { IoMdAdd } from "react-icons/io";
 import './Movies.css';
 import AddMovieModal from './AddMovieModal';
+import MovieDropdown from './MovieDropdown';
+import MovieInfoModal from './MovieInfoModal';
+import DeleteConfirmationModal from './DeleteConfirmationModal';
 
 const Movies = () => {
     const navigate = useNavigate();
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [selectedMovie, setSelectedMovie] = useState(null);
+    const [movieToDelete, setMovieToDelete] = useState(null);
+    const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
         const token = localStorage.getItem('accessToken');
@@ -19,136 +27,45 @@ const Movies = () => {
             return;
         }
 
-        // For testing purposes, using mock data
+        //Mock data for testing*
         const mockMovies = [
             {
                 id: 1,
                 title: "The Shawshank Redemption",
                 genre: "Drama",
-                duration: "2h 22min"
+                duration: "2h 22min",
+                cast: [
+                    { role: "Andy Dufresne", actor: "Tim Robbins" },
+                    { role: "Ellis Boyd 'Red' Redding", actor: "Morgan Freeman" }
+                ]
             },
             {
                 id: 2,
                 title: "The Godfather",
                 genre: "Crime",
-                duration: "2h 55min"
+                duration: "2h 55min",
+                cast: [
+                    { role: "Don Vito Corleone", actor: "Marlon Brando" },
+                    { role: "Michael Corleone", actor: "Al Pacino" }
+                ]
             },
             {
                 id: 3,
                 title: "The Dark Knight",
                 genre: "Action",
-                duration: "2h 32min"
-            },
-            {
-                id: 4,
-                title: "Pulp Fiction",
-                genre: "Crime",
-                duration: "2h 34min"
-            },
-            {
-                id: 5,
-                title: "Inception",
-                genre: "Sci-Fi",
-                duration: "2h 28min"
-            },
-            {
-                id: 1,
-                title: "The Shawshank Redemption",
-                genre: "Drama",
-                duration: "2h 22min"
-            },
-            {
-                id: 2,
-                title: "The Godfather",
-                genre: "Crime",
-                duration: "2h 55min"
-            },
-            {
-                id: 3,
-                title: "The Dark Knight",
-                genre: "Action",
-                duration: "2h 32min"
-            },
-            {
-                id: 4,
-                title: "Pulp Fiction",
-                genre: "Crime",
-                duration: "2h 34min"
-            },
-            {
-                id: 5,
-                title: "Inception",
-                genre: "Sci-Fi",
-                duration: "2h 28min"
-            },
-            {
-                id: 1,
-                title: "The Shawshank Redemption",
-                genre: "Drama",
-                duration: "2h 22min"
-            },
-            {
-                id: 2,
-                title: "The Godfather",
-                genre: "Crime",
-                duration: "2h 55min"
-            },
-            {
-                id: 3,
-                title: "The Dark Knight",
-                genre: "Action",
-                duration: "2h 32min"
-            },
-            {
-                id: 4,
-                title: "Pulp Fiction",
-                genre: "Crime",
-                duration: "2h 34min"
-            },
-            {
-                id: 5,
-                title: "Inception",
-                genre: "Sci-Fi",
-                duration: "2h 28min"
+                duration: "2h 32min",
+                cast: [
+                    { role: "Bruce Wayne", actor: "Christian Bale" },
+                    { role: "Joker", actor: "Heath Ledger" }
+                ]
             }
         ];
 
-        // Simulate API call
+        //Simulate API call*
         setTimeout(() => {
             setMovies(mockMovies);
             setLoading(false);
         }, 1000);
-
-        // When you have a real API, use this:
-        /*
-        const fetchMovies = async () => {
-            try {
-                const response = await fetch('http://your-api-url/api/movies', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    setMovies(data);
-                } else {
-                    if (response.status === 401) {
-                        localStorage.removeItem('accessToken');
-                        navigate('/login');
-                    } else {
-                        setError('Failed to fetch movies');
-                    }
-                }
-            } catch (error) {
-                setError('Connection error');
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchMovies();
-        */
     }, [navigate]);
 
     const handleLogout = () => {
@@ -158,23 +75,67 @@ const Movies = () => {
     };
 
     const handleFilterClick = () => {
-        // Implement filter functionality
+        
         console.log('Filter clicked');
     };
 
     const handleAddMovie = () => {
-        setIsModalOpen(true);
+        setIsEditing(false);
+        setSelectedMovie(null);
+        setIsAddModalOpen(true);
+    };
+
+    const handleEditMovie = (movie) => {
+        setIsEditing(true);
+        setSelectedMovie(movie);
+        setIsAddModalOpen(true);
+    };
+
+    const handleDeleteMovie = (movie) => {
+        setMovieToDelete(movie);
+        setIsDeleteModalOpen(true);
+    };
+
+    const confirmDelete = () => {
+        setMovies(movies.filter(m => m.id !== movieToDelete.id));
+        setIsDeleteModalOpen(false);
+        setMovieToDelete(null);
+    };
+
+    const handleShowInfo = (movie) => {
+        setSelectedMovie(movie);
+        setIsInfoModalOpen(true);
     };
 
     const handleSaveMovie = (movieData) => {
-        console.log('Saving movie:', movieData);
-        setIsModalOpen(false);
+        if (isEditing) {
+            
+            setMovies(movies.map(movie => 
+                movie.id === selectedMovie.id 
+                ? { 
+                    ...movie,  
+                    ...movieData, 
+                    id: selectedMovie.id  
+                }
+                : movie
+            ));
+        } else {
+
+            const newMovie = {
+                id: Date.now(),
+                ...movieData
+            };
+            setMovies([...movies, newMovie]);
+        }
+        
+        setIsAddModalOpen(false);
+        setIsEditing(false);
+        setSelectedMovie(null);
     };
 
     if (loading) {
         return (
             <div className="loading">
-                <div className="loading-spinner"></div>
                 <p>Loading movies...</p>
             </div>
         );
@@ -205,10 +166,10 @@ const Movies = () => {
                     <h1>List of Movies</h1>
                     <div className="header-buttons">
                         <button className="icon-button" onClick={handleAddMovie}>
-                            <IoMdAdd strokeWidth={12}/>
+                            <IoMdAdd />
                         </button>
                         <button className="icon-button" onClick={handleFilterClick}>
-                            <FiFilter strokeWidth={2} />
+                            <FiFilter />
                         </button>
                     </div>
                 </div>
@@ -230,7 +191,12 @@ const Movies = () => {
                                     <td>{movie.genre}</td>
                                     <td>{movie.duration}</td>
                                     <td>
-                                        <button className="more-button">⋮</button>
+                                        <MovieDropdown
+                                            movie={movie}
+                                            onEdit={handleEditMovie}
+                                            onDelete={handleDeleteMovie}
+                                            onInfo={handleShowInfo}
+                                        />
                                     </td>
                                 </tr>
                             ))}
@@ -238,10 +204,35 @@ const Movies = () => {
                     </table>
                 </div>
             </div>
+
             <AddMovieModal 
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
+                isOpen={isAddModalOpen}
+                onClose={() => {
+                    setIsAddModalOpen(false);
+                    setIsEditing(false);
+                    setSelectedMovie(null);
+                }}
                 onSave={handleSaveMovie}
+                editingMovie={isEditing ? selectedMovie : null}
+            />
+            
+            <MovieInfoModal
+                isOpen={isInfoModalOpen}
+                onClose={() => {
+                    setIsInfoModalOpen(false);
+                    setSelectedMovie(null);
+                }}
+                movie={selectedMovie}
+            />
+
+            <DeleteConfirmationModal
+                isOpen={isDeleteModalOpen}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                    setMovieToDelete(null);
+                }}
+                onConfirm={confirmDelete}
+                movieTitle={movieToDelete?.title || ''}
             />
         </div>
     );

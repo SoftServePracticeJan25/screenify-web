@@ -1,23 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './AddMovieModal.css';
 import { IoMdClose } from "react-icons/io";
 
-const AddMovieModal = ({ isOpen, onClose, onSave }) => {
+const AddMovieModal = ({ isOpen, onClose, onSave, editingMovie }) => {
     const [movieData, setMovieData] = useState({
         title: '',
-        image: null,
+        image: '',
         genre: '',
         duration: '',
         cast: [{ role: '', actor: '' }]
     });
     const [imagePreview, setImagePreview] = useState(null);
 
+    useEffect(() => {
+        if (isOpen) {
+            if (editingMovie) {
+                setMovieData(editingMovie);
+                setImagePreview(editingMovie.image || null);
+            } else {
+                setMovieData({
+                    title: '',
+                    image: '',
+                    genre: '',
+                    duration: '',
+                    cast: [{ role: '', actor: '' }]
+                });
+                setImagePreview(null);
+            }
+        }
+    }, [isOpen, editingMovie]);
+
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            setMovieData({ ...movieData, image: file });
             const reader = new FileReader();
             reader.onloadend = () => {
+                setMovieData(prev => ({ ...prev, image: reader.result }));
                 setImagePreview(reader.result);
             };
             reader.readAsDataURL(file);
@@ -25,27 +43,23 @@ const AddMovieModal = ({ isOpen, onClose, onSave }) => {
     };
 
     const handleAddCastMember = () => {
-        setMovieData({
-            ...movieData,
-            cast: [...movieData.cast, { role: '', actor: '' }]
-        });
+        setMovieData(prev => ({
+            ...prev,
+            cast: [...prev.cast, { role: '', actor: '' }]
+        }));
     };
 
     const handleCastChange = (index, field, value) => {
         const newCast = [...movieData.cast];
         newCast[index][field] = value;
-        setMovieData({
-            ...movieData,
-            cast: newCast
-        });
+        setMovieData(prev => ({ ...prev, cast: newCast }));
     };
 
     const handleRemoveCastMember = (index) => {
-        const newCast = movieData.cast.filter((_, i) => i !== index);
-        setMovieData({
-            ...movieData,
-            cast: newCast
-        });
+        setMovieData(prev => ({
+            ...prev,
+            cast: prev.cast.filter((_, i) => i !== index)
+        }));
     };
 
     if (!isOpen) return null;
@@ -64,12 +78,7 @@ const AddMovieModal = ({ isOpen, onClose, onSave }) => {
                                 <img src={imagePreview} alt="Movie preview" className="image-preview" />
                             ) : (
                                 <div className="image-placeholder">
-                                    <input
-                                        type="file"
-                                        accept="image/*"
-                                        onChange={handleImageChange}
-                                        id="image-upload"
-                                    />
+                                    <input type="file" accept="image/*" onChange={handleImageChange} id="image-upload" />
                                     <label htmlFor="image-upload">Click to upload image</label>
                                 </div>
                             )}
@@ -79,29 +88,29 @@ const AddMovieModal = ({ isOpen, onClose, onSave }) => {
                     <div className="details-section">
                         <div className="input-group">
                             <label>Title</label>
-                            <input
-                                type="text"
-                                value={movieData.title}
-                                onChange={(e) => setMovieData({ ...movieData, title: e.target.value })}
+                            <input 
+                                type="text" 
+                                value={movieData.title} 
+                                onChange={(e) => setMovieData(prev => ({ ...prev, title: e.target.value }))} 
                             />
                         </div>
 
                         <div className="input-group">
                             <label>Genre</label>
-                            <input
-                                type="text"
-                                value={movieData.genre}
-                                onChange={(e) => setMovieData({ ...movieData, genre: e.target.value })}
+                            <input 
+                                type="text" 
+                                value={movieData.genre} 
+                                onChange={(e) => setMovieData(prev => ({ ...prev, genre: e.target.value }))} 
                             />
                         </div>
 
                         <div className="input-group">
                             <label>Duration</label>
-                            <input
-                                type="text"
-                                value={movieData.duration}
-                                onChange={(e) => setMovieData({ ...movieData, duration: e.target.value })}
-                                placeholder="2h 30min"
+                            <input 
+                                type="text" 
+                                value={movieData.duration} 
+                                onChange={(e) => setMovieData(prev => ({ ...prev, duration: e.target.value }))} 
+                                placeholder="2h 30min" 
                             />
                         </div>
 
@@ -109,25 +118,20 @@ const AddMovieModal = ({ isOpen, onClose, onSave }) => {
                             <label>Cast</label>
                             {movieData.cast.map((member, index) => (
                                 <div key={index} className="cast-member">
-                                    <input
-                                        type="text"
-                                        placeholder="Role"
-                                        value={member.role}
-                                        onChange={(e) => handleCastChange(index, 'role', e.target.value)}
+                                    <input 
+                                        type="text" 
+                                        placeholder="Role" 
+                                        value={member.role} 
+                                        onChange={(e) => handleCastChange(index, 'role', e.target.value)} 
                                     />
-                                    <input
-                                        type="text"
-                                        placeholder="Actor"
-                                        value={member.actor}
-                                        onChange={(e) => handleCastChange(index, 'actor', e.target.value)}
+                                    <input 
+                                        type="text" 
+                                        placeholder="Actor" 
+                                        value={member.actor} 
+                                        onChange={(e) => handleCastChange(index, 'actor', e.target.value)} 
                                     />
                                     {movieData.cast.length > 1 && (
-                                        <button 
-                                            className="remove-cast"
-                                            onClick={() => handleRemoveCastMember(index)}
-                                        >
-                                            ×
-                                        </button>
+                                        <button className="remove-cast" onClick={() => handleRemoveCastMember(index)}>×</button>
                                     )}
                                 </div>
                             ))}
