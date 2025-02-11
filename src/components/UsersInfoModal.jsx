@@ -22,18 +22,17 @@ const UsersInfoModal = ({ isOpen, onClose, user }) => {
 
                 <div className={styles.detailsSection}>
                     <div className={styles.infoGroup}>
-                        <span className={styles.infoLabel}>Username</span>
-                        <span className={styles.infoValue}>{user.username}</span>
+                        <span className={styles.username}>{user.username}</span>
                     </div>
 
                     <div className={styles.infoGroup}>
                         <span className={styles.infoLabel}>User ID</span>
-                        <span className={styles.infoValue}>{user.id}</span>
+                        <span className={styles.infoValue}><br/>{user.id}</span>
                     </div>
 
                     <div className={styles.infoGroup}>
                         <span className={styles.infoLabel}>Amount of Tickets</span>
-                        <span className={styles.infoValue}>{user.tickets}</span>
+                        <span className={styles.infoValue}><br/>{user.tickets}</span>
                     </div>
                 </div>
             </div>
