@@ -86,14 +86,15 @@ const AddMovieModal = ({ isOpen, onClose, onSave, editingMovie }) => {
                     </div>
 
                     <div className="details-section">
-                        <div className="input-group">
-                            <label>Title</label>
-                            <input 
-                                type="text" 
-                                value={movieData.title} 
-                                onChange={(e) => setMovieData(prev => ({ ...prev, title: e.target.value }))} 
-                            />
-                        </div>
+                    <div className="input-group">
+                        <label htmlFor="title">Title</label>
+                        <input 
+                            id="title"
+                            type="text" 
+                            value={movieData.title} 
+                            onChange={(e) => setMovieData(prev => ({ ...prev, title: e.target.value }))} 
+                        />
+                    </div>
 
                         <div className="input-group">
                             <label>Genre</label>

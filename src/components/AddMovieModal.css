@@ -58,6 +58,14 @@
     height: calc(100% - 1rem); 
 }
 
+.input-group label[for="title"] {
+    background: linear-gradient(to right, #FAB33F, #F9EB32); 
+    color: transparent; 
+    -webkit-background-clip: text; 
+    background-clip: text;
+    font-weight: 700;
+}
+
 .details-section {
     flex: 1;
     display: flex;
@@ -137,6 +145,7 @@
     gap: 1rem;
     margin-top: 1rem;
 }
+
 
 .input-group input, 
 .cast-member input {
@@ -232,3 +241,4 @@
 .save-button:hover {
     background-color: #524ba3;
 }
+
