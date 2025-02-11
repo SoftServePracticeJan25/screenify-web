@@ -1,4 +1,4 @@
-.modal-overlay {
+.modalOverlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -11,7 +11,7 @@
     z-index: 1000;
 }
 
-.modal-content {
+.modalContent {
     background-color: #211D54;
     border-radius: 8px;
     width: 780px;
@@ -23,7 +23,49 @@
     flex-direction: column;
 }
 
-.movie-title {
+.modalBody {
+    margin-top: 1rem;
+    display: flex;
+    font-family: 'Lato', sans-serif;
+    gap: 2rem;
+    height: calc(100% - 1rem);
+}
+
+.imageSection {
+    flex-shrink: 0;
+}
+
+.imageContainer {
+    width: 300px;
+    height: 450px;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.movieImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.imagePlaceholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+}
+
+.detailsSection {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.movieTitle {
     font-size: 24px;
     margin: 0 0 1.5rem 0;
     background: linear-gradient(to right, #FAB33F, #F9EB32); 
@@ -33,7 +75,72 @@
     font-weight: 700;
 }
 
-.close-button {
+.infoGroup {
+    margin-bottom: 1.5rem;
+}
+
+.infoLabel {
+    display: block;
+    font-size: 20px;
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+
+.infoValue {
+    display: block;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+}
+
+.castSection {
+    margin-top: 1rem;
+}
+
+.castList {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+.castList::-webkit-scrollbar {
+    width: 6px;
+}
+
+.castList::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.castList::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+.castList::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.castItem {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.actorName {
+    font-weight: 500;
+    color: white;
+}
+
+.roleName {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.closeButton {
     position: absolute;
     top: 0.75rem;
     right: 0.75rem;
@@ -52,118 +159,11 @@
     transition: background-color 0.2s;
 }
 
-.close-button:hover {
+.closeButton:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-.modal-body {
-    margin-top: 1rem;
-    display: flex;
-    font-family: 'Lato', sans-serif;
-    gap: 2rem;
-    height: calc(100% - 1rem);
-}
-
-.image-section {
-    flex-shrink: 0;
-}
-
-.image-container {
-    width: 300px;
-    height: 450px;
-    border-radius: 8px;
-    overflow: hidden;
-    background-color: rgba(255, 255, 255, 0.05);
-}
-
-.movie-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.image-placeholder {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 14px;
-}
-
-.details-section {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.info-group {
-    margin-bottom: 1.5rem;
-}
-
-.info-label {
-    display: block;
-    font-size: 20px;
-    color: #fff;
-    margin-bottom: 0.5rem;
-}
-
-.info-value {
-    display: block;
-    font-size: 16px;
-    color: rgba(255, 255, 255, 0.7);
-    font-weight: 500;
-}
-
-.cast-section {
-    margin-top: 1rem;
-}
-
-.cast-list {
-    margin-top: 0.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    max-height: 200px;
-    overflow-y: auto;
-    padding-right: 0.5rem;
-}
-
-.cast-list::-webkit-scrollbar {
-    width: 6px;
-}
-
-.cast-list::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 3px;
-}
-
-.cast-list::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 3px;
-}
-
-.cast-list::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.3);
-}
-
-.cast-item {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-}
-
-.actor-name {
-    font-weight: 500;
-    color: white;
-}
-
-.role-name {
-    color: rgba(255, 255, 255, 0.7);
-}
-
-.modal-footer {
+.modalFooter {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -178,7 +178,7 @@
     padding: 0 2rem;
 }
 
-.close-button-footer {
+.closeButtonFooter {
     min-width: 80px;
     height: 28px;
     font-size: 12px;
@@ -188,10 +188,9 @@
     border: 1px solid rgba(255, 255, 255, 0.3);
     color: white;
     font-family: 'Lato', sans-serif;
-    font-size: 12px; 
     font-weight: 700;
 }
 
-.close-button-footer:hover {
+.closeButtonFooter:hover {
     background-color: #524ba3;
 }

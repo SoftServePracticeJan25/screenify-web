@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './Users.css';
 import UserDropdown from './UserDropdown';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
+import UsersInfoModal from './UsersInfoModal';
 
 const Users = () => {
     const navigate = useNavigate();
@@ -11,6 +12,8 @@ const Users = () => {
     const [error, setError] = useState('');
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [userToDelete, setUserToDelete] = useState(null);
+    const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+    const [selectedUser, setSelectedUser] = useState(null);
 
     useEffect(() => {
         const token = localStorage.getItem('accessToken');
@@ -24,17 +27,20 @@ const Users = () => {
             {
                 id: 1,
                 username: "john_doe",
-                tickets: 5
+                tickets: 5,
+                image: "https://randomuser.me/api/portraits/men/1.jpg"
             },
             {
                 id: 2,
                 username: "jane_smith",
-                tickets: 3
+                tickets: 3,
+                image: "https://randomuser.me/api/portraits/women/2.jpg"
             },
             {
                 id: 3,
                 username: "bob_wilson",
-                tickets: 7
+                tickets: 7,
+                image: ""
             }
         ];
 
@@ -51,10 +57,6 @@ const Users = () => {
         navigate('/login');
     };
 
-    const handleFilterClick = () => {
-        console.log('Filter clicked');
-    };
-
     const handleDeleteUser = (user) => {
         setUserToDelete(user);
         setIsDeleteModalOpen(true);
@@ -67,7 +69,8 @@ const Users = () => {
     };
 
     const handleShowInfo = (user) => {
-        console.log('Show info for user:', user);
+        setSelectedUser(user);
+        setIsInfoModalOpen(true);
     };
 
     if (loading) {
@@ -133,6 +136,15 @@ const Users = () => {
                     </table>
                 </div>
             </div>
+
+            <UsersInfoModal
+                isOpen={isInfoModalOpen}
+                onClose={() => {
+                    setIsInfoModalOpen(false);
+                    setSelectedUser(null);
+                }}
+                user={selectedUser}
+            />
 
             <DeleteConfirmationModal
                 isOpen={isDeleteModalOpen}

@@ -1,50 +1,50 @@
 import React from 'react';
 import { IoMdClose } from "react-icons/io";
-import './MovieInfoModal.css';
+import styles from './MovieInfoModal.module.css';
 
 const MovieInfoModal = ({ isOpen, onClose, movie }) => {
     if (!isOpen || !movie) return null;
 
     return (
-        <div className="modal-overlay">
-            <div className="modal-content">
-                <button className="close-button" onClick={onClose}>
+        <div className={styles.modalOverlay}>
+            <div className={styles.modalContent}>
+                <button className={styles.closeButton} onClick={onClose}>
                     <IoMdClose />
                 </button>
                 
-                <div className="modal-body">
-                    <div className="image-section">
-                        <div className="image-container">
+                <div className={styles.modalBody}>
+                    <div className={styles.imageSection}>
+                        <div className={styles.imageContainer}>
                             {movie.image ? (
-                                <img src={movie.image} alt={movie.title} className="movie-image" />
+                                <img src={movie.image} alt={movie.title} className={styles.movieImage} />
                             ) : (
-                                <div className="image-placeholder">
+                                <div className={styles.imagePlaceholder}>
                                     No image available
                                 </div>
                             )}
                         </div>
                     </div>
 
-                    <div className="details-section">
-                        <h2 className="movie-title">{movie.title}</h2>
+                    <div className={styles.detailsSection}>
+                        <h2 className={styles.movieTitle}>{movie.title}</h2>
                         
-                        <div className="info-group">
-                            <span className="info-label">Genre</span>
-                            <span className="info-value">{movie.genre}</span>
+                        <div className={styles.infoGroup}>
+                            <span className={styles.infoLabel}>Genre</span>
+                            <span className={styles.infoValue}>{movie.genre}</span>
                         </div>
 
-                        <div className="info-group">
-                            <span className="info-label">Duration</span>
-                            <span className="info-value">{movie.duration}</span>
+                        <div className={styles.infoGroup}>
+                            <span className={styles.infoLabel}>Duration</span>
+                            <span className={styles.infoValue}>{movie.duration}</span>
                         </div>
 
-                        <div className="cast-section">
-                            <span className="info-label">Cast</span>
-                            <div className="cast-list">
+                        <div className={styles.castSection}>
+                            <span className={styles.infoLabel}>Cast</span>
+                            <div className={styles.castList}>
                                 {movie.cast && movie.cast.map((member, index) => (
-                                    <div key={index} className="cast-item">
-                                        <span className="actor-name">{member.actor}</span>
-                                        <span className="role-name">as {member.role}</span>
+                                    <div key={index} className={styles.castItem}>
+                                        <span className={styles.actorName}>{member.actor}</span>
+                                        <span className={styles.roleName}>as {member.role}</span>
                                     </div>
                                 ))}
                             </div>
@@ -52,8 +52,8 @@ const MovieInfoModal = ({ isOpen, onClose, movie }) => {
                     </div>
                 </div>
 
-                <div className="modal-footer">
-                    <button className="close-button-footer" onClick={onClose}>Close</button>
+                <div className={styles.modalFooter}>
+                    <button className={styles.closeButtonFooter} onClick={onClose}>Close</button>
                 </div>
             </div>
         </div>
