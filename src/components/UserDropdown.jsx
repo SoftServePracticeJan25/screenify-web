@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { FiInfo, FiTrash2 } from 'react-icons/fi';
-import './MovieDropdown.css'; 
+import '../components/movies/MovieDropdown.css'; 
 
 const UserDropdown = ({ user, onDelete, onInfo }) => {
     const [isOpen, setIsOpen] = useState(false);

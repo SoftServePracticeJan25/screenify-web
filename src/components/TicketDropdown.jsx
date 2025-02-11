@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { FiInfo } from 'react-icons/fi';
-import './MovieDropdown.css'; 
+import '../components/movies/MovieDropdown.css'; 
 
 const TicketDropdown = ({ ticket, onInfo }) => {
     const [isOpen, setIsOpen] = useState(false);
