@@ -5,6 +5,8 @@ import Header from './components/Header';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import Movies from './components/Movies';
+import Users from './components/Users';
+
 
 function App() {
   const isAuthenticated = () => {
@@ -17,6 +19,7 @@ function App() {
     }
     return children;
   };
+  
 
   return (
     <Router>
@@ -45,6 +48,11 @@ function App() {
           <Route path="/movies" element={
             <ProtectedRoute>
               <Movies />
+            </ProtectedRoute>
+          } />
+          <Route path="/users" element={
+            <ProtectedRoute>
+              <Users />
             </ProtectedRoute>
           } />
 

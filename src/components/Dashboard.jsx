@@ -27,7 +27,7 @@ const Dashboard = () => {
                     const data = await response.json();
                     setUserData(data);
                 } else {
-                    // Токен недействителен
+                    
                     localStorage.removeItem('accessToken');
                     navigate('/login');
                 }
