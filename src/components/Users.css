@@ -178,12 +178,12 @@ tr:hover {
 
 .users-table th:nth-child(1), 
 .users-table td:nth-child(1) {
-    width: 50%;  
+    width: 30%;  
 }
 
 .users-table th:nth-child(2), 
 .users-table td:nth-child(2) {
-    width: 25%;  
+    width: 45%;  
     
 }
 

@@ -1,0 +1,119 @@
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modalContent {
+    background-color: #211D54;
+    border-radius: 8px;
+    width: 780px;
+    height: 520px;
+    position: relative;
+    padding: 1.5rem;
+    color: white;
+}
+
+.modalBody {
+    margin-left: 0.5rem;
+    margin-top: 1rem;
+    display: flex;
+    gap: 4rem;
+}
+
+.imageSection {
+    flex-shrink: 0;
+    width: 206px;
+}
+
+.imageContainer {
+    width: 236px;
+    height: 432px;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.ticketImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.imagePlaceholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+}
+
+.detailsSection {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding-top: 1rem;
+}
+
+.ticketTitle {
+    font-size: 24px;
+    margin-bottom: 2rem;
+    background: linear-gradient(to right, #FAB33F, #F9EB32);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 700;
+}
+
+.infoGroup {
+    margin-bottom: 1.5rem;
+}
+
+.infoLabel {
+    display: block;
+    font-size: 18px;
+    color: #fff;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.infoValue {
+    display: block;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+}
+
+.closeButton {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    transition: background-color 0.2s;
+}
+
+.closeButton:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+

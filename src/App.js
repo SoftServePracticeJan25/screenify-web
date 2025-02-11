@@ -6,6 +6,7 @@ import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import Movies from './components/Movies';
 import Users from './components/Users';
+import Tickets from './components/Tickets';
 
 
 function App() {
@@ -53,6 +54,11 @@ function App() {
           <Route path="/users" element={
             <ProtectedRoute>
               <Users />
+            </ProtectedRoute>
+          } />
+          <Route path="/tickets" element={
+            <ProtectedRoute>
+              <Tickets />
             </ProtectedRoute>
           } />
 
