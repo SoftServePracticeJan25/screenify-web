@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FiInfo } from 'react-icons/fi';
-import '../components/movies/MovieDropdown.css'; 
+import { FiInfo, FiTrash2 } from 'react-icons/fi';
+import '../movies/MovieDropdown.css'; 
 
-const TicketDropdown = ({ ticket, onInfo }) => {
+const UserDropdown = ({ user, onDelete, onInfo }) => {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
 
@@ -17,9 +17,18 @@ const TicketDropdown = ({ ticket, onInfo }) => {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
-    const handleOptionClick = () => {
+    const handleOptionClick = (action) => {
         setIsOpen(false);
-        onInfo(ticket);
+        switch(action) {
+            case 'delete':
+                onDelete(user);
+                break;
+            case 'info':
+                onInfo(user);
+                break;
+            default:
+                break;
+        }
     };
 
     return (
@@ -27,7 +36,10 @@ const TicketDropdown = ({ ticket, onInfo }) => {
             <button className="more-button" onClick={() => setIsOpen(!isOpen)}>⋮</button>
             {isOpen && (
                 <div className="dropdown-content">
-                    <div className="dropdown-option" onClick={handleOptionClick}>
+                    <div className="dropdown-option" onClick={() => handleOptionClick('delete')}>
+                        <FiTrash2 /> Delete
+                    </div>
+                    <div className="dropdown-option" onClick={() => handleOptionClick('info')}>
                         <FiInfo /> Info
                     </div>
                 </div>
@@ -36,4 +48,4 @@ const TicketDropdown = ({ ticket, onInfo }) => {
     );
 };
 
-export default TicketDropdown;
+export default UserDropdown;

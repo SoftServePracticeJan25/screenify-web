@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Users.css';
 import UserDropdown from './UserDropdown';
-import DeleteConfirmationModal from '../components/movies/DeleteConfirmationModal';
+import DeleteConfirmationModal from '../movies/DeleteConfirmationModal';
 import UsersInfoModal from './UsersInfoModal';
 
 const Users = () => {

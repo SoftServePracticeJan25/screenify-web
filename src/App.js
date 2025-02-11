@@ -5,8 +5,8 @@ import Header from './components/Header';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import Movies from './components/movies/Movies';
-import Users from './components/Users';
-import Tickets from './components/Tickets';
+import Users from './components/users/Users';
+import Tickets from './components/tickets/Tickets';
 
 
 function App() {
