@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../../api'; //  API-client
 import { FiFilter } from 'react-icons/fi';
 import { IoMdAdd } from "react-icons/io";
 import './Movies.css';
@@ -27,45 +28,18 @@ const Movies = () => {
             return;
         }
 
-        //Mock data for testing*
-        const mockMovies = [
-            {
-                id: 1,
-                title: "The Shawshank Redemption",
-                genre: "Drama",
-                duration: "2h 22min",
-                cast: [
-                    { role: "Andy Dufresne", actor: "Tim Robbins" },
-                    { role: "Ellis Boyd 'Red' Redding", actor: "Morgan Freeman" }
-                ]
-            },
-            {
-                id: 2,
-                title: "The Godfather",
-                genre: "Crime",
-                duration: "2h 55min",
-                cast: [
-                    { role: "Don Vito Corleone", actor: "Marlon Brando" },
-                    { role: "Michael Corleone", actor: "Al Pacino" }
-                ]
-            },
-            {
-                id: 3,
-                title: "The Dark Knight",
-                genre: "Action",
-                duration: "2h 32min",
-                cast: [
-                    { role: "Bruce Wayne", actor: "Christian Bale" },
-                    { role: "Joker", actor: "Heath Ledger" }
-                ]
-            }
-        ];
+        api.get('/Movies')
+            .then(response => {
+                setMovies(response.data);
+            })
+            .catch(error => {
+                console.error('API error:', error);
+                setError('Failed to load movies.');
+            })
+            .finally(() => {
+                setLoading(false);
+            });
 
-        //Simulate API call*
-        setTimeout(() => {
-            setMovies(mockMovies);
-            setLoading(false);
-        }, 1000);
     }, [navigate]);
 
     const handleLogout = () => {
@@ -74,63 +48,20 @@ const Movies = () => {
         navigate('/login');
     };
 
-    const handleFilterClick = () => {
-        
-        console.log('Filter clicked');
-    };
-
     const handleAddMovie = () => {
         setIsEditing(false);
         setSelectedMovie(null);
         setIsAddModalOpen(true);
     };
 
-    const handleEditMovie = (movie) => {
-        setIsEditing(true);
-        setSelectedMovie(movie);
-        setIsAddModalOpen(true);
-    };
-
-    const handleDeleteMovie = (movie) => {
-        setMovieToDelete(movie);
-        setIsDeleteModalOpen(true);
-    };
-
-    const confirmDelete = () => {
-        setMovies(movies.filter(m => m.id !== movieToDelete.id));
-        setIsDeleteModalOpen(false);
-        setMovieToDelete(null);
-    };
-
-    const handleShowInfo = (movie) => {
-        setSelectedMovie(movie);
-        setIsInfoModalOpen(true);
-    };
-
-    const handleSaveMovie = (movieData) => {
-        if (isEditing) {
-            
-            setMovies(movies.map(movie => 
-                movie.id === selectedMovie.id 
-                ? { 
-                    ...movie,  
-                    ...movieData, 
-                    id: selectedMovie.id  
-                }
-                : movie
-            ));
-        } else {
-
-            const newMovie = {
-                id: Date.now(),
-                ...movieData
-            };
-            setMovies([...movies, newMovie]);
+    const handleSaveMovie = async (movieData) => {
+        try {
+            const response = await api.post('/Movies', movieData);
+            setMovies([...movies, response.data]); // Добавляем новый фильм в список
+        } catch (error) {
+            console.error('Error adding movie:', error);
         }
-        
         setIsAddModalOpen(false);
-        setIsEditing(false);
-        setSelectedMovie(null);
     };
 
     if (loading) {
@@ -169,7 +100,7 @@ const Movies = () => {
                         <button className="icon-button" onClick={handleAddMovie}>
                             <IoMdAdd />
                         </button>
-                        <button className="icon-button" onClick={handleFilterClick}>
+                        <button className="icon-button">
                             <FiFilter />
                         </button>
                     </div>
@@ -178,62 +109,38 @@ const Movies = () => {
                 <div className="movies-table">
                     <table>
                         <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Genre</th>
-                                <th>Duration</th>
-                                <th></th>
-                            </tr>
+                        <tr>
+                            <th>Title</th>
+                            <th>Genre</th>
+                            <th>Duration</th>
+                            <th></th>
+                        </tr>
                         </thead>
                         <tbody>
-                            {movies.map((movie) => (
-                                <tr key={movie.id}>
-                                    <td>{movie.title}</td>
-                                    <td>{movie.genre}</td>
-                                    <td>{movie.duration}</td>
-                                    <td>
-                                        <MovieDropdown
-                                            movie={movie}
-                                            onEdit={handleEditMovie}
-                                            onDelete={handleDeleteMovie}
-                                            onInfo={handleShowInfo}
-                                        />
-                                    </td>
-                                </tr>
-                            ))}
+                        {movies.map((movie) => (
+                            <tr key={movie.id}>
+                                <td>{movie.title}</td>
+                                <td>{movie.genre}</td>
+                                <td>{movie.duration}</td>
+                                <td>
+                                    <MovieDropdown
+                                        movie={movie}
+                                        onEdit={() => {}}
+                                        onDelete={() => {}}
+                                        onInfo={() => {}}
+                                    />
+                                </td>
+                            </tr>
+                        ))}
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <AddMovieModal 
+            <AddMovieModal
                 isOpen={isAddModalOpen}
-                onClose={() => {
-                    setIsAddModalOpen(false);
-                    setIsEditing(false);
-                    setSelectedMovie(null);
-                }}
+                onClose={() => setIsAddModalOpen(false)}
                 onSave={handleSaveMovie}
-                editingMovie={isEditing ? selectedMovie : null}
-            />
-            
-            <MovieInfoModal
-                isOpen={isInfoModalOpen}
-                onClose={() => {
-                    setIsInfoModalOpen(false);
-                    setSelectedMovie(null);
-                }}
-                movie={selectedMovie}
-            />
-
-            <DeleteConfirmationModal
-                isOpen={isDeleteModalOpen}
-                onClose={() => {
-                    setIsDeleteModalOpen(false);
-                    setMovieToDelete(null);
-                }}
-                onConfirm={confirmDelete}
-                movieTitle={movieToDelete?.title || ''}
             />
         </div>
     );
