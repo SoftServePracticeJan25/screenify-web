@@ -9,6 +9,7 @@ import Users from './components/users/Users';
 import Tickets from './components/tickets/Tickets';
 import Reviews from './components/reviews/Reviews';
 import Sessions from './components/sessions/Sessions';
+import Rooms from './components/rooms/Rooms';
 
 function App() {
   const isAuthenticated = () => {
@@ -70,6 +71,11 @@ function App() {
           <Route path="/sessions" element={
             <ProtectedRoute>
               <Sessions />
+            </ProtectedRoute>
+          } />
+          <Route path="/rooms" element={
+            <ProtectedRoute>
+              <Rooms />
             </ProtectedRoute>
           } />
 

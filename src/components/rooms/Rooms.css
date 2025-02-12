@@ -1,0 +1,158 @@
+
+.rooms-container {
+    min-height: 100vh;
+    background-color: #040223;
+    color: #ffffff;
+}
+
+.rooms-header {
+    display: flex;
+    margin-top: 5rem;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.rooms-header h1 {
+    font-weight: 700;
+    letter-spacing: 2px;
+    font-family: 'Lato', sans-serif;
+    font-size: 36px;
+}
+
+.rooms-grid {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 1rem;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+}
+
+.room-container {
+    background-color: #211D54;
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    width: 290px;
+    height: 355px;
+    flex-shrink: 0;
+}
+
+.room-container:hover {
+    transform: translateY(-5px);
+}
+
+.room-container h2 {
+    margin-bottom: 1rem;
+    font-size: 20px;
+    font-weight: 500;
+    color: #ffffff;
+    text-transform: uppercase;
+    text-transform: none;
+    letter-spacing: 1px;
+}
+
+.screen {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.3rem;
+    margin-bottom: 1.5rem;
+    border-radius: 4px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.seats-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    align-items: center;
+}
+
+.seat-row {
+    display: flex;
+    gap: 0.3rem;
+}
+
+.seat {
+    width: 20px;
+    height: 20px;
+    background-color: #6c12cce8;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.seat svg {
+    width: 20px;
+    height: 20px;
+    transform: rotate(180deg); 
+    color: rgba(0, 0, 0, 0.6); 
+}
+
+
+.seat:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.seat.booked {
+    background-color: #ffffff;
+}
+
+.green-room .seat.booked {
+    background-color: #4aff50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.9);
+}
+
+.red-room .seat.booked {
+    background-color: #ea2315;
+    box-shadow: 0 0 5px rgba(255, 72, 59, 0.6);
+}
+
+.blue-room .seat.booked {
+    background-color: #76ddff;
+    box-shadow: 0 0 5px rgba(33, 150, 243, 0.8);
+}
+
+.gold-room .seat.booked {
+    background-color: #ffe448;
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+}
+
+.green-room {
+    border: 1px solid rgb(74, 255, 80);
+}
+
+.red-room {
+    border: 1px solid rgba(234, 35, 21);
+}
+
+.blue-room {
+    border: 1px solid rgba(118, 221, 255);
+}
+
+.gold-room {
+    border: 1px solid rgba(255, 228, 72);
+}
+
+.rooms-grid::-webkit-scrollbar {
+    height: 8px;
+}
+
+.rooms-grid::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.rooms-grid::-webkit-scrollbar-thumb {
+    background: rgba(99, 92, 195, 0.5);
+    border-radius: 4px;
+}
+
+.rooms-grid::-webkit-scrollbar-thumb:hover {
+    background: rgba(99, 92, 195, 0.7);
+}
