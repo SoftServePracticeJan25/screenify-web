@@ -93,14 +93,18 @@
     color: rgba(0, 0, 0, 0.6); 
 }
 
-
+.room-info {
+    margin-top: 1.5rem;
+    font-size: 14px;
+    font-weight: 500;
+    color: #ffffff;
+    text-align: left;
+  }
+ 
+  
 .seat:hover {
     transform: scale(1.1);
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-}
-
-.seat.booked {
-    background-color: #ffffff;
+    box-shadow: 0 0 10px rgb(74, 255, 80);
 }
 
 .green-room .seat.booked {

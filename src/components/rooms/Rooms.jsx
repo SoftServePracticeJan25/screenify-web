@@ -3,31 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import './Rooms.css';
 import { MdEventSeat } from "react-icons/md";
 
-const Room = ({ name, color, seats, onSeatClick }) => {
-  return (
-    <div className={`room-container ${color.toLowerCase()}-room`}>
-      <h2>{name}</h2>
-      <div className="screen">Screen</div>
-      <div className="seats-container">
-        {seats.map((row, rowIndex) => (
-          <div key={rowIndex} className="seat-row">
-            {row.map((seat, seatIndex) => (
-              <div
-                key={`${rowIndex}-${seatIndex}`}
-                className={`seat ${seat.isBooked ? 'booked' : ''}`}
-                onClick={() => onSeatClick(name, rowIndex, seatIndex)}
-                title={`Row ${rowIndex + 1}, Seat ${seatIndex + 1}`}
-                >
-                <MdEventSeat />
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
 const Rooms = () => {
   const navigate = useNavigate();
   const [rooms, setRooms] = useState({});
@@ -41,6 +16,24 @@ const Rooms = () => {
       return;
     }
 
+    /*API 
+    { 
+  "Green Room": {
+    "color": "Green",
+    "seats": [
+      [
+        {"isBooked": false},
+        {"isBooked": false},
+        // ...
+      ],
+      // ...
+    ]
+  },
+  "Red Room": {
+    // ...
+  }
+}
+*/
     // Mock room data
     const initialRooms = {
       'Green Room': {
@@ -106,6 +99,39 @@ const Rooms = () => {
   if (error) {
     return <div className="error-message">{error}</div>;
   }
+  
+  const Room = ({ name, color, seats, onSeatClick }) => {
+
+    const freeSeats = seats.reduce((acc, row) => acc + row.filter(seat => !seat.isBooked).length, 0);
+    const purchasedSeats = seats.reduce((acc, row) => acc + row.filter(seat => seat.isBooked).length, 0);
+  
+    return (
+      <div className={`room-container ${color.toLowerCase()}-room`}>
+        <h2>{name}</h2>
+        <div className="screen">Screen</div>
+        <div className="seats-container">
+          {seats.map((row, rowIndex) => (
+            <div key={rowIndex} className="seat-row">
+              {row.map((seat, seatIndex) => (
+                <div
+                  key={`${rowIndex}-${seatIndex}`}
+                  className={`seat ${seat.isBooked ? 'booked' : ''}`}
+                  onClick={() => onSeatClick(name, rowIndex, seatIndex)}
+                  title={`Row ${rowIndex + 1}, Seat ${seatIndex + 1}`}
+                >
+                  <MdEventSeat />
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+        <div className="room-info">
+          <p>Free Seats: {freeSeats}</p>
+          <p>Purchased Seats: {purchasedSeats}</p>
+        </div>
+      </div>
+    );
+  };
   
   return (
     <div className="rooms-container">
