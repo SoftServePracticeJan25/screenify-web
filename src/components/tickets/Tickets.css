@@ -22,29 +22,6 @@
     overflow: hidden;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th, td {
-    padding: 0.75rem 2rem;
-    text-align: left;
-    border-bottom: 2px solid rgba(99, 92, 195, 0.5);
-    font-size: 16px;
-}
-
-th {
-    font-weight: 700;
-}
-
-td {
-    font-size: 14px;
-}
-
-tr:hover {
-    background-color: rgba(99, 92, 195, 0.3);
-}
 
 .tickets-table th:nth-child(1), 
 .tickets-table td:nth-child(1) {

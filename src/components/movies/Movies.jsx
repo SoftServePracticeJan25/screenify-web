@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiFilter } from 'react-icons/fi';
 import { IoMdAdd } from "react-icons/io";
 import './Movies.css';
 import AddMovieModal from './AddMovieModal';
@@ -38,6 +37,7 @@ const Movies = () => {
                     { role: "Andy Dufresne", actor: "Tim Robbins" },
                     { role: "Ellis Boyd 'Red' Redding", actor: "Morgan Freeman" }
                 ]
+                
             },
             {
                 id: 2,
@@ -168,9 +168,6 @@ const Movies = () => {
                     <div className="header-buttons">
                         <button className="icon-button" onClick={handleAddMovie}>
                             <IoMdAdd />
-                        </button>
-                        <button className="icon-button" onClick={handleFilterClick}>
-                            <FiFilter />
                         </button>
                     </div>
                 </div>

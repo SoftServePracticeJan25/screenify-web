@@ -8,6 +8,7 @@ import Movies from './components/movies/Movies';
 import Users from './components/users/Users';
 import Tickets from './components/tickets/Tickets';
 import Reviews from './components/reviews/Reviews';
+import Sessions from './components/sessions/Sessions';
 
 function App() {
   const isAuthenticated = () => {
@@ -64,6 +65,11 @@ function App() {
           <Route path="/reviews" element={
             <ProtectedRoute>
               <Reviews />
+            </ProtectedRoute>
+          } />
+          <Route path="/sessions" element={
+            <ProtectedRoute>
+              <Sessions />
             </ProtectedRoute>
           } />
 

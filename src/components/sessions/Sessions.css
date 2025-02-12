@@ -1,0 +1,57 @@
+.sessions-container {
+    min-height: 100vh;
+    background-color: #040223;
+    color: #ffffff;
+}
+
+.sessions-header {
+    display: flex;
+    margin-top: 5rem;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sessions-header h1 {
+    font-weight: 700;
+    letter-spacing: 2px;
+    font-family: 'Lato', sans-serif; 
+    font-size: 36px; 
+    font-weight: 700;
+}
+
+.sessions-table {
+    background-color: #211D54;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.sessions-table th:nth-child(1), 
+.sessions-table td:nth-child(1) {
+    width: 5%;  
+}
+
+.sessions-table th:nth-child(2), 
+.sessions-table td:nth-child(2) {
+    width: 30%;  
+    
+}
+
+.sessions-table th:nth-child(3), 
+.sessions-table td:nth-child(3) {
+    width: 25%;  
+}
+
+.sessions-table th:nth-child(4), 
+.sessions-table td:nth-child(4) {
+    width: 25%;   
+}
+
+.sessions-table th:nth-child(5), 
+.sessions-table td:nth-child(5) {
+    width: 10%;   
+}
+
+.sessions-table th:nth-child(6), 
+.sessions-table td:nth-child(6) {
+    width: 5%;   
+}
