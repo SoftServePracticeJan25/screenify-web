@@ -7,7 +7,7 @@ import Dashboard from './components/Dashboard';
 import Movies from './components/movies/Movies';
 import Users from './components/users/Users';
 import Tickets from './components/tickets/Tickets';
-
+import Reviews from './components/reviews/Reviews';
 
 function App() {
   const isAuthenticated = () => {
@@ -59,6 +59,11 @@ function App() {
           <Route path="/tickets" element={
             <ProtectedRoute>
               <Tickets />
+            </ProtectedRoute>
+          } />
+          <Route path="/reviews" element={
+            <ProtectedRoute>
+              <Reviews />
             </ProtectedRoute>
           } />
 

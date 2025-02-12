@@ -74,7 +74,7 @@ const Tickets = () => {
 
             <div className="content">
                 <div className="tickets-header">
-                    <h1>List of Tickets</h1>
+                    <h1>List of All Tickets</h1>
                 </div>
 
                 <div className="tickets-table">
