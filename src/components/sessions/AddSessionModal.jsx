@@ -72,7 +72,7 @@ const AddSessionModal = ({ isOpen, onClose, onSave, editingSession }) => {
 
     return (
         <div className="modal-overlay">
-            <div className="modal-content">
+            <div className="session-modal-content">
                 <button className="close-button" onClick={onClose}>
                     <IoMdClose />
                 </button>

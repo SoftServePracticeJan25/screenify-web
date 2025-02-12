@@ -66,6 +66,7 @@
     font-weight: 700;
 }
 
+
 .details-section {
     flex: 1;
     display: flex;
@@ -147,10 +148,22 @@
 }
 
 
-.input-group input, 
-.cast-member input {
-    margin-left: 2px;
+.input-group input{
+    margin-left: 1px;
     height: 30px; 
+    width: 15rem;
+    padding: 6px 10px;
+    font-size: 0.8rem; 
+    border-radius: 3px; 
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.cast-member input {
+    margin-left: 1px;
+    height: 30px;
+    width: 10rem; 
     padding: 6px 10px;
     font-size: 0.8rem; 
     border-radius: 3px; 
@@ -160,6 +173,7 @@
 }
 
 .cast-member {
+    margin-top: 1rem;
     display: flex;
     gap: 1rem;
     align-items: center;
@@ -186,7 +200,6 @@
     margin-top: 1rem;
     margin-bottom: 1rem;
     padding: 0.3rem 0.3rem; 
-    font-size: 0.7rem;
     font-family: 'Lato', sans-serif;
     font-size: 12px; 
     font-weight: 700;
