@@ -14,7 +14,7 @@ const Login = () => {
     const [error, setError] = useState('');
 
     if (localStorage.getItem('accessToken')) {
-        return <Navigate to="/movies" />;
+        return <Navigate to="/statistics" />;
     }
 
     const handleChange = (e) => {

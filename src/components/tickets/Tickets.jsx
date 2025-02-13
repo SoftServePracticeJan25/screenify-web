@@ -68,6 +68,7 @@ const Tickets = () => {
                     <li><a href="/rooms">Rooms</a></li>
                     <li><a href="/tickets" className="active">Tickets</a></li>
                     <li><a href="/reviews">Reviews</a></li>
+                    <li><a href="/statistics">Statistics</a></li>
                     <li><button onClick={handleLogout} className="logout-btn">LOG OUT</button></li>
                 </ul>
             </nav>

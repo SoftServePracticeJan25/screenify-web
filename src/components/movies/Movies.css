@@ -9,14 +9,15 @@
     justify-content: space-between;
     align-items: center;
     padding: 1px;
+    height: 100px;
     background-color: #211D54; /*banner*/
     border-bottom: 5px solid rgba(4, 2, 35, 0.8);
 }
 
 .logo {
     font-family: 'Lato', sans-serif; 
-    font-size: 38px; 
-    font-weight: 800;
+    font-size: 40px; 
+    font-weight: 900;
     letter-spacing: 4px;
     background: linear-gradient(to right, #FAB33F, #F9EB32); 
     color: transparent; 
@@ -33,20 +34,24 @@
     align-items: center;
     font-size: 0.7rem; 
     padding: 0.2rem 0.5rem; 
+    justify-content: center; 
+    width: 100%; 
 }
 
 .nav-links a {
+    margin-left: 0.4rem;
     color: #ffffff;
-    margin-left: 1rem;
     text-decoration: none;
-    font-size: 0.9rem;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0.5rem;
     border-radius: 4px;
     transition: all 0.3s ease;
     font-family: 'Lato', sans-serif; 
-    font-size: 16px; 
+    font-size: 14px; 
     font-weight: 500;
     text-transform: none;
+    align-items: center;
+    justify-content: center; 
+    
 }
 
 .nav-links a.active {
@@ -63,7 +68,7 @@
 }
 
 .logout-btn {
-    margin-right: 2rem;
+    margin-right: 1rem;
     font-weight: 100;
     background: none;
     border: none;
@@ -71,7 +76,7 @@
     cursor: pointer;
     font-size: 20px;
     padding: 0.5rem 1rem;
-    align-items: center;
+    align-items: right;
     font-family: 'Lato', sans-serif; 
     font-size: 22px; 
 }
@@ -96,7 +101,7 @@
 }
 
 .movies-header h1 {
-    font-weight: 700;
+ 
     letter-spacing: 2px;
     font-family: 'Lato', sans-serif; 
     font-size: 36px; 

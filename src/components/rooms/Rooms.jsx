@@ -146,6 +146,7 @@ const Rooms = () => {
           <li><a href="/rooms" className="active">Rooms</a></li>
           <li><a href="/tickets">Tickets</a></li>
           <li><a href="/reviews">Reviews</a></li>
+          <li><a href="/statistics">Statistics</a></li>
           <li><button onClick={handleLogout} className="logout-btn">LOG OUT</button></li>
         </ul>
       </nav>
