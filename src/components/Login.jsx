@@ -6,6 +6,7 @@ import { MdVpnKey } from "react-icons/md";
 
 
 const Login = () => {
+    const baseUrl = process.env.REACT_APP_BASE_URL;
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         username: '',
@@ -26,6 +27,8 @@ const Login = () => {
     };
 
     const handleLogin = async (e) => {
+        const baseUrl = process.env.REACT_APP_BASE_URL;
+        console.log(baseUrl+"api/account/login");
         e.preventDefault();
         setError('');
 
@@ -47,7 +50,8 @@ const Login = () => {
         }
 
         try {
-            const response = await fetch('http://your-api-url/api/login', {
+            console.log(baseUrl+'/api/account/login');
+            const response = await fetch(baseUrl+'/api/account/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -56,7 +60,7 @@ const Login = () => {
             });
 
             const data = await response.json();
-
+            console.log(data);
             if (response.ok) {
                 localStorage.setItem('accessToken', data.accessToken);
                 localStorage.setItem('user', JSON.stringify(data.user));
