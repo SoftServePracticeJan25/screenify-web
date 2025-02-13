@@ -65,12 +65,10 @@
     gap: 0.5rem;
     padding: 0.5rem 1.5rem;
     background-color: rgba(99, 92, 195, 0.5);
-    border: 2px solid rgba(255, 255, 255, 0.5);
     font-weight: bold;
     border-radius: 4px;
     color: #ffffff;
     cursor: pointer;
-    color: #ffffff;
     font-family: 'Lato', sans-serif;
     font-size: 14px;
     height: 40px;

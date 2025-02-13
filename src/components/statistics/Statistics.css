@@ -6,22 +6,21 @@
 
 .statistics-header {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
     margin-top: 5rem;
-    margin-bottom: 2rem;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .header-left {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 0.5rem;
 }
 
 .header-left h1 {
     letter-spacing: 2px;
-    font-family: 'Lato', sans-serif;
-    font-size: 36px;
+    font-family: 'Lato', sans-serif; 
+    font-size: 36px; 
     font-weight: 700;
 }
 
@@ -46,30 +45,36 @@
 .date-picker {
     padding: 0.5rem;
     border-radius: 4px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    background-color: #211D54;
+    border: 2px solid rgba(255, 255, 255, 0.532);
+    background-color: #040223;
     color: #ffffff;
     font-family: 'Lato', sans-serif;
     font-size: 14px;
-    width: 150px;
+    width: 210px;
 }
 
+
+.filter-btn:hover {
+    background-color: rgba(99, 92, 195, 0.8);
+    box-shadow: 0px 0px 15px rgba(69, 64, 132, 0.7);
+}
+
+
 .filter-btn {
-    background-color: #323056;
-    border: none;
-    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     padding: 0.5rem 1.5rem;
+    background-color: rgba(109, 102, 212, 0.8);
+    font-weight: bold;
     border-radius: 4px;
+    color: #ffffff;
     cursor: pointer;
     font-family: 'Lato', sans-serif;
     font-size: 14px;
-    height: 38px;
+    width: 120px;
+    height: 36px;
     transition: all 0.3s ease;
-}
-
-.filter-btn:hover {
-    background-color: rgba(99, 92, 195, 0.5);
-    box-shadow: 0px 0px 15px rgba(99, 92, 195, 0.8);
 }
 
 .header-right {
@@ -77,15 +82,12 @@
 }
 
 .view-select {
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    background-color: #211D54;
-    color: #ffffff;
-    font-family: 'Lato', sans-serif;
-    font-size: 14px;
-    min-width: 200px;
-    cursor: pointer;
+    padding: 0.5rem 1rem 0.5rem 2.5rem;
+    background-color: rgba(99, 92, 195, 0.5);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    width: 330px;
+    height: 40px;
+    color: rgba(255, 255, 255, 0.5);
 }
 
 .view-select:hover {
@@ -99,3 +101,23 @@
     margin-top: 2rem;
 }
 
+.statistics-table th:nth-child(1), 
+.statistics-table td:nth-child(1) {
+    width: 40%;  
+}
+
+.statistics-table th:nth-child(2), 
+.statistics-table td:nth-child(2) {
+    width: 35%;  
+    
+}
+
+.statistics-table th:nth-child(3), 
+.statistics-table td:nth-child(3) {
+    width: 20%;  
+}
+
+.statistics-table th:nth-child(4), 
+.statistics-table td:nth-child(4) {
+    width: 5%;   
+}

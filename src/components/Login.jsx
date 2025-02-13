@@ -45,7 +45,7 @@ const Login = () => {
             
             localStorage.setItem('accessToken', mockUserData.accessToken);
             localStorage.setItem('user', JSON.stringify(mockUserData.user));
-            navigate('/movies', { replace: true });
+            navigate('/statistics', { replace: true });
             return;
         }
 
@@ -64,7 +64,7 @@ const Login = () => {
             if (response.ok) {
                 localStorage.setItem('accessToken', data.accessToken);
                 localStorage.setItem('user', JSON.stringify(data.user));
-                navigate('/movies', { replace: true });
+                navigate('/statistics', { replace: true });
             } else {
                 setError(data.message || 'Login failed. Please check your credentials.');
             }
