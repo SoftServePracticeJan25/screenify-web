@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { IoMdClose } from "react-icons/io";
 import './AddSessionModal.css';
+import { getGenreIdByName } from '../../utils/genreUtils';
 
 const AddSessionModal = ({ isOpen, onClose, onSave, editingSession }) => {
     const [sessionData, setSessionData] = useState({
         movieTitle: '',
         image: '',
-        genre: '',
+        genre: [],
         duration: '',
         date: '',
         time: '',
@@ -18,13 +19,24 @@ const AddSessionModal = ({ isOpen, onClose, onSave, editingSession }) => {
     useEffect(() => {
         if (isOpen) {
             if (editingSession) {
-                setSessionData(editingSession);
+                //setSessionData(editingSession);
+                setSessionData({
+                    id: editingSession.id || null,
+                    title: editingSession.title || '',
+                    image: editingSession.image || '',
+                    genres: Array.isArray(editingMovie.genres) ? editingMovie.genres : [],
+                    duration: editingMovie.duration || '',
+                    time: editingMovie.time || '',
+                    room: editingMovie.room || '',
+                    //ticketTypes:
+                })
                 setImagePreview(editingSession.image || null);
             } else {
                 setSessionData({
+                    id: null,
                     movieTitle: '',
                     image: '',
-                    genre: '',
+                    genre: [],
                     duration: '',
                     date: '',
                     time: '',
@@ -35,6 +47,15 @@ const AddSessionModal = ({ isOpen, onClose, onSave, editingSession }) => {
             }
         }
     }, [isOpen, editingSession]);
+
+    const handleSave = () => {
+        const formattedSessionData = {
+            ...sessionData,
+            genres: sessionData.genres.map(g => g.id)
+        };
+
+        onSave(formattedSessionData);
+    };
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -106,8 +127,17 @@ const AddSessionModal = ({ isOpen, onClose, onSave, editingSession }) => {
                             <label>Genre</label>
                             <input 
                                 type="text" 
-                                value={sessionData.genre} 
-                                onChange={(e) => setSessionData(prev => ({ ...prev, genre: e.target.value }))} 
+                                value={sessionData.genres.map(g => (typeof g === 'object' ? g.name : g)).join(', ')}
+                                onChange={(e) => {
+                                    const genreNames = e.target.value.split(',').map(name => name.trim());
+                                    setSessionData(prev => ({
+                                        ...prev,
+                                        genres: genreNames.map(name => {
+                                            const genreId = getGenreIdByName(name);
+                                            return genreId ? { id: genreId, name } : { name };
+                                        })
+                                    }));
+                                }}
                             />
                         </div>
 
@@ -176,7 +206,7 @@ const AddSessionModal = ({ isOpen, onClose, onSave, editingSession }) => {
 
                 <div className="modal-footer">
                     <button className="cancel-button" onClick={onClose}>Cancel</button>
-                    <button className="save-button" onClick={() => onSave(sessionData)}>Save</button>
+                    <button className="save-button" onClick={handleSave}>Save</button>
                 </div>
             </div>
         </div>
