@@ -4,110 +4,81 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f80d01c2-2de5-4298-b04c-cef029c74705" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/utils/genreUtils.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Login.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/movies/AddMovieModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/movies/AddMovieModal.jsx" afterDir="false" />
+    <list default="true" id="3327d5e6-56a2-45a4-afd4-083cd547a632" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/movies/Movies.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/movies/Movies.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/sessions/AddSessionModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/sessions/AddSessionModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/sessions/Sessions.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/sessions/Sessions.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="JavaScript File" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="s-usingapi-givingsomeexamples" />
+        <entry key="$PROJECT_DIR$" value="s-UsingApi" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;T8mpest&quot;
-  }
-}</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/SoftServePracticeJan25/screenify-web.git&quot;,
-    &quot;accountId&quot;: &quot;01cc16c4-739c-4337-b0bd-1bff7fbaf06a&quot;
-  }
-}</component>
   <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 8
+  &quot;associatedIndex&quot;: 0
 }</component>
-  <component name="ProjectId" id="2sv4KwvcZgkJP31e0MqsK3nuPEu" />
+  <component name="ProjectId" id="2szwEb12pLaSTcGIVIxKkex3L5k" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Node.js.Login.jsx.executor": "Run",
+    "JavaScript Debug.index.html.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "s-UsingApi",
-    "ignore.virus.scanning.warn.message": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "disable.download.node.interpreter.editor.notification": "true",
+    "git-widget-placeholder": "s-UsingApiMoviesSessions",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "G:\\WebStorm 2024.2.0.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="ReactDesignerToolWindowState">
+    <option name="myId2Visible">
+      <map>
+        <entry key="com.intellij.reactbuddy.reactComponents" value="false" />
+        <entry key="com.intellij.reactbuddy.reactInspector" value="false" />
+        <entry key="com.intellij.reactbuddy.storybook" value="false" />
+      </map>
+    </option>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-410509235cf1-JavaScript-WS-242.20224.426" />
+        <option value="bundled-js-predefined-d6986cc7102b-822845ee3bb5-JavaScript-WS-243.23654.157" />
       </set>
     </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="f80d01c2-2de5-4298-b04c-cef029c74705" name="Changes" comment="" />
-      <created>1739322653512</created>
+      <changelist id="3327d5e6-56a2-45a4-afd4-083cd547a632" name="Changes" comment="" />
+      <created>1739471601035</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1739322653512</updated>
-      <workItem from="1739322654588" duration="3662000" />
-      <workItem from="1739356869384" duration="2499000" />
-      <workItem from="1739444279942" duration="11992000" />
+      <updated>1739471601035</updated>
+      <workItem from="1739471602627" duration="93000" />
+      <workItem from="1739471705651" duration="468000" />
+      <workItem from="1739472186033" duration="9800000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="OPEN_GENERIC_TABS">
-      <map>
-        <entry key="e4d4d3b6-2ac6-4ce5-8d40-83dbabf91e61" value="TOOL_WINDOW" />
-      </map>
-    </option>
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-        <entry key="e4d4d3b6-2ac6-4ce5-8d40-83dbabf91e61">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
   </component>
 </project>

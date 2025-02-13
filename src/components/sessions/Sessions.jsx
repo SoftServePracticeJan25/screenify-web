@@ -3,11 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { FiFilter } from 'react-icons/fi';
 import { IoMdAdd } from "react-icons/io";
 import './Sessions.css';
+import { getGenreIdByName } from '../../utils/genreUtils';
 import AddSessionModal from './AddSessionModal';
 import MovieDropdown from '../movies/MovieDropdown'; 
 import MovieInfoModal from '../movies/MovieInfoModal'; 
 import DeleteConfirmationModal from '../movies/DeleteConfirmationModal'; 
 import FilterModal from './FilterModal';
+
+const API_URL = process.env.REACT_APP_API_URL
 
 const Sessions = () => {
     const navigate = useNavigate();
@@ -29,7 +32,7 @@ const Sessions = () => {
             return;
         }
 
-        // Mock data for testing
+        /*// Mock data for testing
         const mockSessions = [
             {
                 id: 1,
@@ -38,8 +41,8 @@ const Sessions = () => {
                 time: "19:00",
                 room: "Hall 1",
                 ticketTypes: [
-                    { type: "Standard", price: "10.00" },
-                    { type: "VIP", price: "15.00" }
+                    {type: "Standard", price: "10.00"},
+                    {type: "VIP", price: "15.00"}
                 ]
             },
             {
@@ -49,16 +52,37 @@ const Sessions = () => {
                 time: "20:30",
                 room: "Hall 2",
                 ticketTypes: [
-                    { type: "Standard", price: "10.00" },
-                    { type: "VIP", price: "15.00" }
+                    {type: "Standard", price: "10.00"},
+                    {type: "VIP", price: "15.00"}
                 ]
             }
-        ];
+        ];*/
+        const fetchSessions= async () => {
+            try {
+                const response = await fetch(`${API_URL}/session`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                if (!response.ok) {
+                    throw new Error('Error loading sessions');
+                }
+                const data = await response.json();
+                setSessions(data);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+    }
 
-        setTimeout(() => {
+        /*setTimeout(() => {
             setSessions(mockSessions);
             setLoading(false);
-        }, 1000);
+        }, 1000);*/
+        fetchSessions();
     }, [navigate]);
 
     const handleLogout = () => {
@@ -67,14 +91,75 @@ const Sessions = () => {
         navigate('/login');
     };
 
-    const handleFilterClick = () => {
+   /* const handleFilterClick = () => {
         setIsFilterModalOpen(true);
     };
-
-    const handleAddSession = () => {
+*/
+    /*const handleAddSession = () => {
         setIsEditing(false);
         setSelectedSession(null);
         setIsAddModalOpen(true);
+    };*/
+
+    const handleAddSession = async (sessionData) => {
+        const token = localStorage.getItem('accessToken');
+        if (!token) {
+            console.error('No token found, redirecting to login.');
+            navigate('/login');
+            return;
+        }
+        try {
+            const response = await fetch(`${API_URL}/session`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(sessionData)
+            });
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to add session');
+            }
+            const data = await response.json();
+            return data;
+        } catch (err) {
+            console.error('Error adding session:', err);
+        }
+    };
+
+    const handleSaveSession = async (sessionData) => {
+        const token = localStorage.getItem('accessToken');
+        if (!token) {
+            console.error('No token found, redirecting to login.');
+            navigate('/login');
+            return;
+        }
+        try {
+            const response = await fetch(`${API_URL}/session/${sessionData.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(sessionData)
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to update session');
+            }
+            setSessions((prevSessions) =>
+                prevSessions.map((session) =>
+                    session.id === data.id ? data : session
+                )
+            );
+            setIsAddModalOpen(false);
+            setIsEditing(false);
+            setSelectedSession(null);
+        } catch (err) {
+            console.error('Error updating session:', err);
+            setError(err.message);
+        }
     };
 
     const handleEditSession = (session) => {
@@ -88,10 +173,40 @@ const Sessions = () => {
         setIsDeleteModalOpen(true);
     };
 
-    const confirmDelete = () => {
+   /* const confirmDelete = () => {
         setSessions(sessions.filter(s => s.id !== sessionToDelete.id));
         setIsDeleteModalOpen(false);
         setSessionToDelete(null);
+    };*/
+
+    const confirmDelete = async () => {
+        if (!sessionToDelete) return;
+        const token = localStorage.getItem('accessToken');
+        if (!token) {
+            console.error('No token found, redirecting to login.');
+            navigate('/login');
+            return;
+        }
+        console.log('Using token:', token); // Debugging
+        try {
+            const response = await fetch(`${API_URL}/session/${sessionToDelete.id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!response.ok) {
+                const errorResponse = await response.json();
+                console.error('Server response:', errorResponse); // Debugging
+                throw new Error(errorResponse.message || 'Failed to delete movie');
+            }
+            setSessions((prevSessions) => prevSessions.filter((m) => m.id !== sessionToDelete.id));
+            setIsDeleteModalOpen(false);
+            setSessionToDelete(null);
+        } catch (err) {
+            setError(err.message);
+        }
     };
 
     const handleShowInfo = (session) => {
@@ -99,7 +214,7 @@ const Sessions = () => {
         setIsInfoModalOpen(true);
     };
 
-    const handleSaveSession = (sessionData) => {
+   /* const handleSaveSession = (sessionData) => {
         if (isEditing) {
             setSessions(sessions.map(session => 
                 session.id === selectedSession.id 
@@ -117,7 +232,7 @@ const Sessions = () => {
         setIsAddModalOpen(false);
         setIsEditing(false);
         setSelectedSession(null);
-    };
+    };*/
 
     if (loading) {
         return (
@@ -209,7 +324,7 @@ const Sessions = () => {
                     setSelectedSession(null);
                 }}
                 onSave={handleSaveSession}
-                editingSession={isEditing ? selectedSession : null}
+                editingSession={isEditing ? selectedSession || {} : null}
             />
             
             <MovieInfoModal
