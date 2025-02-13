@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IoMdAdd } from "react-icons/io";
 import './Movies.css';
+import { getGenreIdByName } from '../../utils/genreUtils';
 import AddMovieModal from './AddMovieModal';
 import MovieDropdown from './MovieDropdown';
 import MovieInfoModal from './MovieInfoModal';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
+
+const API_URL = process.env.REACT_APP_API_URL
 
 const Movies = () => {
     const navigate = useNavigate();
@@ -26,46 +29,31 @@ const Movies = () => {
             return;
         }
 
-        //Mock data for testing*
-        const mockMovies = [
-            {
-                id: 1,
-                title: "The Shawshank Redemption",
-                genre: "Drama",
-                duration: "2h 22min",
-                cast: [
-                    { role: "Andy Dufresne", actor: "Tim Robbins" },
-                    { role: "Ellis Boyd 'Red' Redding", actor: "Morgan Freeman" }
-                ]
-                
-            },
-            {
-                id: 2,
-                title: "The Godfather",
-                genre: "Crime",
-                duration: "2h 55min",
-                cast: [
-                    { role: "Don Vito Corleone", actor: "Marlon Brando" },
-                    { role: "Michael Corleone", actor: "Al Pacino" }
-                ]
-            },
-            {
-                id: 3,
-                title: "The Dark Knight",
-                genre: "Action",
-                duration: "2h 32min",
-                cast: [
-                    { role: "Bruce Wayne", actor: "Christian Bale" },
-                    { role: "Joker", actor: "Heath Ledger" }
-                ]
-            }
-        ];
+        //  API
+        const fetchMovies = async () => {
+            try {
+                const response = await fetch(`${API_URL}/movies`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
 
-        //Simulate API call*
-        setTimeout(() => {
-            setMovies(mockMovies);
-            setLoading(false);
-        }, 1000);
+                if (!response.ok) {
+                    throw new Error('Error loading films');
+                }
+
+                const data = await response.json();
+                setMovies(data);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchMovies();
     }, [navigate]);
 
     const handleLogout = () => {
@@ -74,16 +62,58 @@ const Movies = () => {
         navigate('/login');
     };
 
-    const handleFilterClick = () => {
-        
-        console.log('Filter clicked');
-    };
-
     const handleAddMovie = () => {
         setIsEditing(false);
         setSelectedMovie(null);
         setIsAddModalOpen(true);
     };
+
+    const handleSaveMovie = async (movieData) => {
+        const token = localStorage.getItem('accessToken');
+
+        if (!token) {
+            console.error('No token found, redirecting to login.');
+            navigate('/login');
+            return;
+        }
+
+        const formattedMovieData = {
+            ...movieData,
+            genres: movieData.genres.map(g => (typeof g === 'object' ? g.id : getGenreIdByName(g)))
+        };
+
+        try {
+            const response = await fetch(`${API_URL}/movies/${movieData.id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formattedMovieData)
+            });
+
+            const data = await response.json();
+            console.log('Server response:', data);
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to update movie');
+            }
+
+            setMovies((prevMovies) =>
+                prevMovies.map((movie) =>
+                    movie.id === data.id ? data : movie
+                )
+            );
+
+            setIsAddModalOpen(false);
+            setIsEditing(false);
+            setSelectedMovie(null);
+        } catch (err) {
+            console.error('Error updating movie:', err);
+            setError(err.message);
+        }
+    };
+
 
     const handleEditMovie = (movie) => {
         setIsEditing(true);
@@ -96,41 +126,47 @@ const Movies = () => {
         setIsDeleteModalOpen(true);
     };
 
-    const confirmDelete = () => {
-        setMovies(movies.filter(m => m.id !== movieToDelete.id));
-        setIsDeleteModalOpen(false);
-        setMovieToDelete(null);
+    const confirmDelete = async () => {
+        if (!movieToDelete) return;
+
+        const token = localStorage.getItem('accessToken');
+
+        if (!token) {
+            console.error('No token found, redirecting to login.');
+            navigate('/login');
+            return;
+        }
+
+
+        console.log('Using token:', token); // Debugging
+
+        try {
+            const response = await fetch(`${API_URL}/movies/${movieToDelete.id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                const errorResponse = await response.json();
+                console.error('Server response:', errorResponse); // Debugging
+                throw new Error(errorResponse.message || 'Failed to delete movie');
+            }
+
+            setMovies((prevMovies) => prevMovies.filter((m) => m.id !== movieToDelete.id));
+            setIsDeleteModalOpen(false);
+            setMovieToDelete(null);
+        } catch (err) {
+            setError(err.message);
+        }
     };
+
 
     const handleShowInfo = (movie) => {
         setSelectedMovie(movie);
         setIsInfoModalOpen(true);
-    };
-
-    const handleSaveMovie = (movieData) => {
-        if (isEditing) {
-            
-            setMovies(movies.map(movie => 
-                movie.id === selectedMovie.id 
-                ? { 
-                    ...movie,  
-                    ...movieData, 
-                    id: selectedMovie.id  
-                }
-                : movie
-            ));
-        } else {
-
-            const newMovie = {
-                id: Date.now(),
-                ...movieData
-            };
-            setMovies([...movies, newMovie]);
-        }
-        
-        setIsAddModalOpen(false);
-        setIsEditing(false);
-        setSelectedMovie(null);
     };
 
     if (loading) {
@@ -175,45 +211,47 @@ const Movies = () => {
                 <div className="movies-table">
                     <table>
                         <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Genre</th>
-                                <th>Duration</th>
-                                <th></th>
-                            </tr>
+                        <tr>
+                            <th>Title</th>
+                            <th>Genre</th>
+                            <th>Duration</th>
+                            <th></th>
+                        </tr>
                         </thead>
                         <tbody>
-                            {movies.map((movie) => (
-                                <tr key={movie.id}>
-                                    <td>{movie.title}</td>
-                                    <td>{movie.genre}</td>
-                                    <td>{movie.duration}</td>
-                                    <td>
-                                        <MovieDropdown
-                                            movie={movie}
-                                            onEdit={handleEditMovie}
-                                            onDelete={handleDeleteMovie}
-                                            onInfo={handleShowInfo}
-                                        />
-                                    </td>
-                                </tr>
-                            ))}
+                        {movies.map((movie) => (
+                            <tr key={movie.id}>
+                                <td>{movie.title}</td>
+                                <td>{movie.genres && Array.isArray(movie.genres) ? movie.genres.map(g => g.name).join(', ') : 'Unknown'}</td>
+                                <td>{movie.duration}</td>
+                                <td>
+                                    <MovieDropdown
+                                        movie={movie}
+                                        onEdit={handleEditMovie}
+                                        onDelete={handleDeleteMovie}
+                                        onInfo={handleShowInfo}
+                                    />
+                                </td>
+                            </tr>
+                        ))}
                         </tbody>
+
                     </table>
                 </div>
             </div>
 
-            <AddMovieModal 
+            <AddMovieModal
                 isOpen={isAddModalOpen}
                 onClose={() => {
                     setIsAddModalOpen(false);
                     setIsEditing(false);
                     setSelectedMovie(null);
                 }}
-                onSave={handleSaveMovie}
-                editingMovie={isEditing ? selectedMovie : null}
+                onSave={handleSaveMovie} // Now connected to API
+                editingMovie={isEditing ? selectedMovie || {} : null}
             />
-            
+
+
             <MovieInfoModal
                 isOpen={isInfoModalOpen}
                 onClose={() => {
@@ -229,7 +267,7 @@ const Movies = () => {
                     setIsDeleteModalOpen(false);
                     setMovieToDelete(null);
                 }}
-                onConfirm={confirmDelete}
+                onConfirm={confirmDelete} // Now connected to API
                 movieTitle={movieToDelete?.title || ''}
             />
         </div>
