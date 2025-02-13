@@ -4,6 +4,7 @@ import './Login.css';
 import { FaRegUser } from "react-icons/fa";
 import { MdVpnKey } from "react-icons/md";
 
+const API_URL = process.env.REACT_APP_API_URL
 
 const Login = () => {
     const navigate = useNavigate();
@@ -13,9 +14,12 @@ const Login = () => {
     });
     const [error, setError] = useState('');
 
-    if (localStorage.getItem('accessToken')) {
-        return <Navigate to="/movies" />;
-    }
+    const isAuthenticated = localStorage.getItem('accessToken');
+
+    useEffect(() => {
+        const usernameInput = document.getElementById('username');
+        if (usernameInput) usernameInput.focus();
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -29,25 +33,8 @@ const Login = () => {
         e.preventDefault();
         setError('');
 
-        if (formData.username === 'admin' && formData.password === 'admin') {
-            const mockUserData = {
-                accessToken: 'mock-token-12345',
-                user: {
-                    id: 1,
-                    username: 'admin',
-                    email: 'admin@example.com',
-                    role: 'admin'
-                }
-            };
-            
-            localStorage.setItem('accessToken', mockUserData.accessToken);
-            localStorage.setItem('user', JSON.stringify(mockUserData.user));
-            navigate('/movies', { replace: true });
-            return;
-        }
-
         try {
-            const response = await fetch('http://your-api-url/api/login', {
+            const response = await fetch(`${API_URL}/account/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -56,18 +43,26 @@ const Login = () => {
             });
 
             const data = await response.json();
+            console.log('Server response:', data); // 🔥 Debugging line
 
-            if (response.ok) {
+            if (response.ok && data.accessToken) {
+                console.log('Storing token:', data.accessToken);  // ✅ Debugging
                 localStorage.setItem('accessToken', data.accessToken);
-                localStorage.setItem('user', JSON.stringify(data.user));
+                localStorage.setItem('user', JSON.stringify(data));
                 navigate('/movies', { replace: true });
             } else {
-                setError(data.message || 'Login failed. Please check your credentials.');
+                console.error('Error: Token is missing in response:', data);
+                setError(data.message || 'Incorrect login credentials.');
             }
         } catch (err) {
-            setError('Incorrect username or password.');
+            setError('Server error. Please try again later.');
         }
     };
+
+
+    if (isAuthenticated) {
+        return <Navigate to="/movies" />;
+    }
 
     return (
         <div className="wrapper">
@@ -76,28 +71,28 @@ const Login = () => {
                     <h1>Log In</h1>
                     {error && <p className="error">{error}</p>}
                     <div className="input-box">
-                    <input
-                        type="text"
-                        name="username"
-                        placeholder="Username"
-                        value={formData.username}
-                        onChange={handleChange}
-                        required
-                        autocomplete="off"
-                    />
-                        
+                        <input
+                            id="username"
+                            type="text"
+                            name="username"
+                            placeholder="Username"
+                            value={formData.username}
+                            onChange={handleChange}
+                            required
+                            autoComplete="off"
+                        />
                         <FaRegUser className="icon" />
                     </div>
                     <div className="input-box">
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder="Password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        required
-                        autocomplete="off"
-                    />
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="Password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            required
+                            autoComplete="off"
+                        />
                         <MdVpnKey className="icon" />
                     </div>
                     <div className="remember-forgot">

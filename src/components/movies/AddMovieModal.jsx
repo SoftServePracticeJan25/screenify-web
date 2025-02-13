@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './AddMovieModal.css';
+import { getGenreIdByName } from '../../utils/genreUtils';
 import { IoMdClose } from "react-icons/io";
 
 const AddMovieModal = ({ isOpen, onClose, onSave, editingMovie }) => {
     const [movieData, setMovieData] = useState({
         title: '',
         image: '',
-        genre: '',
+        genres: [],
         duration: '',
         cast: [{ role: '', actor: '' }]
     });
@@ -15,13 +16,21 @@ const AddMovieModal = ({ isOpen, onClose, onSave, editingMovie }) => {
     useEffect(() => {
         if (isOpen) {
             if (editingMovie) {
-                setMovieData(editingMovie);
+                setMovieData({
+                    id: editingMovie.id || null, // Ensure ID exists
+                    title: editingMovie.title || '',
+                    image: editingMovie.image || '',
+                    genres: Array.isArray(editingMovie.genres) ? editingMovie.genres : [], // Ensure genres is an array
+                    duration: editingMovie.duration || '',
+                    cast: Array.isArray(editingMovie.cast) ? editingMovie.cast : [{ role: '', actor: '' }] // Ensure cast is an array
+                });
                 setImagePreview(editingMovie.image || null);
             } else {
                 setMovieData({
+                    id: null,
                     title: '',
                     image: '',
-                    genre: '',
+                    genres: [],
                     duration: '',
                     cast: [{ role: '', actor: '' }]
                 });
@@ -29,6 +38,17 @@ const AddMovieModal = ({ isOpen, onClose, onSave, editingMovie }) => {
             }
         }
     }, [isOpen, editingMovie]);
+
+    const handleSave = () => {
+        const formattedMovieData = {
+            ...movieData,
+            genres: movieData.genres.map(g => g.id)
+        };
+
+        onSave(formattedMovieData);
+    };
+
+
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -98,20 +118,30 @@ const AddMovieModal = ({ isOpen, onClose, onSave, editingMovie }) => {
 
                         <div className="input-group">
                             <label>Genre</label>
-                            <input 
-                                type="text" 
-                                value={movieData.genre} 
-                                onChange={(e) => setMovieData(prev => ({ ...prev, genre: e.target.value }))} 
+                            <input
+                                type="text"
+                                value={movieData.genres.map(g => (typeof g === 'object' ? g.name : g)).join(', ')}
+                                onChange={(e) => {
+                                    const genreNames = e.target.value.split(',').map(name => name.trim());
+
+                                    setMovieData(prev => ({
+                                        ...prev,
+                                        genres: genreNames.map(name => {
+                                            const genreId = getGenreIdByName(name);
+                                            return genreId ? { id: genreId, name } : { name };
+                                        })
+                                    }));
+                                }}
                             />
                         </div>
 
                         <div className="input-group">
                             <label>Duration</label>
-                            <input 
-                                type="text" 
-                                value={movieData.duration} 
-                                onChange={(e) => setMovieData(prev => ({ ...prev, duration: e.target.value }))} 
-                                placeholder="2h 30min" 
+                            <input
+                                type="text"
+                                value={movieData.duration}
+                                onChange={(e) => setMovieData(prev => ({...prev, duration: e.target.value}))}
+                                placeholder="2h 30min"
                             />
                         </div>
 
@@ -145,7 +175,7 @@ const AddMovieModal = ({ isOpen, onClose, onSave, editingMovie }) => {
 
                 <div className="modal-footer">
                     <button className="cancel-button" onClick={onClose}>Cancel</button>
-                    <button className="save-button" onClick={() => onSave(movieData)}>Save</button>
+                    <button className="save-button" onClick={handleSave}>Save</button>
                 </div>
             </div>
         </div>
