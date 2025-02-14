@@ -100,6 +100,72 @@
     margin: 2rem 0 1rem 0;
 }
 
+.movies-stats-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem 0;
+  }
+  
+  .movie-stat-card {
+    background-color: #211D54;
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+  }
+  
+  .movie-stat-card:hover {
+    transform: translateX(5px);
+    box-shadow: -5px 0 15px rgba(99, 92, 195, 0.3);
+  }
+  
+  .movie-stat-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  
+  .movie-image {
+    width: 74px;
+    height: 74px;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+  
+  .header-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .movie-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+  }
+  
+  .id {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+  }
+  
+  .stat-info {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  
+  .stat-label {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.5);
+  }
+  
+  .stat-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: #FAB33F;
+  }
+  
 .statistics-table {
     background-color: #211D54;
     border-radius: 8px;

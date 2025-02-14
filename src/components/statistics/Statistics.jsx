@@ -4,6 +4,7 @@ import { FiFilter } from 'react-icons/fi';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import MovieDropdown from '../movies/MovieDropdown';
+import MovieStatCard from './MovieStatCard';
 import './Statistics.css';
 
 const Statistics = () => {
@@ -12,6 +13,7 @@ const Statistics = () => {
     const [endDate, setEndDate] = useState(new Date());
     const [selectedView, setSelectedView] = useState('best-selling');
     const [statistics, setStatistics] = useState([]);
+    const [movieStats, setMovieStats] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
@@ -22,7 +24,6 @@ const Statistics = () => {
             return;
         }
 
-        // Mock data for testing
         const mockStats = [
             {
                 id: 1,
@@ -44,8 +45,33 @@ const Statistics = () => {
             }
         ];
 
+        const mockMovieStats = [
+            {
+                id: 1,
+                title: "The Dark Knight",
+                movieId: "MOV001",
+                ticketsSold: 1500,
+                image: "/api/placeholder/74/74"
+            },
+            {
+                id: 2,
+                title: "Inception",
+                movieId: "MOV002",
+                ticketsSold: 1200,
+                image: "/api/placeholder/74/74"
+            },
+            {
+                id: 3,
+                title: "Interstellar",
+                movieId: "MOV003",
+                ticketsSold: 900,
+                image: "/api/placeholder/74/74"
+            }
+        ];
+
         setTimeout(() => {
             setStatistics(mockStats);
+            setMovieStats(mockMovieStats);
             setLoading(false);
         }, 1000);
     }, [navigate]);
@@ -146,32 +172,40 @@ const Statistics = () => {
 
                 <h2 className="table-heading">{getTableHeading()}</h2>
 
-                <div className="statistics-table">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Genre</th>
-                                <th>Genre ID</th>
-                                <th>Tickets Sold</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {statistics.map((stat) => (
-                                <tr key={stat.id}>
-                                    <td>{stat.genre}</td>
-                                    <td>{stat.genreId}</td>
-                                    <td>{stat.ticketsSold}</td>
-                                    <td>
-                                        <div style={{ pointerEvents: 'none' }}>
-                                            <MovieDropdown movie={stat} />
-                                        </div>
-                                    </td>
+                {selectedView === 'popular-genres' ? (
+                    <div className="statistics-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Genre</th>
+                                    <th>Genre ID</th>
+                                    <th>Tickets Sold</th>
+                                    <th></th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody>
+                                {statistics.map((stat) => (
+                                    <tr key={stat.id}>
+                                        <td>{stat.genre}</td>
+                                        <td>{stat.genreId}</td>
+                                        <td>{stat.ticketsSold}</td>
+                                        <td>
+                                            <div style={{ pointerEvents: 'none' }}>
+                                                <MovieDropdown movie={stat} />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                ) : (
+                    <div className="movies-stats-list">
+                        {movieStats.map((movie) => (
+                            <MovieStatCard key={movie.id} movie={movie} />
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     );
