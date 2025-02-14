@@ -72,6 +72,19 @@ const Statistics = () => {
         return <div className="error-message">{error}</div>;
     }
 
+    const getTableHeading = () => {
+        switch(selectedView) {
+            case 'best-selling':
+                return 'Best Selling Movies';
+            case 'best-rated':
+                return 'Best Rated Movies';
+            case 'popular-genres':
+                return 'Most Popular Genres';
+            default:
+                return '';
+        }
+    };
+
     return (
         <div className="statistics-container">
             <nav className="top-nav">
@@ -131,6 +144,8 @@ const Statistics = () => {
                     </div>
                 </div>
 
+                <h2 className="table-heading">{getTableHeading()}</h2>
+
                 <div className="statistics-table">
                     <table>
                         <thead>
@@ -152,7 +167,6 @@ const Statistics = () => {
                                             <MovieDropdown movie={stat} />
                                         </div>
                                     </td>
-
                                 </tr>
                             ))}
                         </tbody>
