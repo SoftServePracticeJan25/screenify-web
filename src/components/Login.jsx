@@ -4,9 +4,9 @@ import './Login.css';
 import { FaRegUser } from "react-icons/fa";
 import { MdVpnKey } from "react-icons/md";
 
-const API_URL = process.env.REACT_APP_API_URL
 
 const Login = () => {
+    const baseUrl = process.env.REACT_APP_API_URL;
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         username: '',
@@ -18,8 +18,15 @@ const Login = () => {
 
     useEffect(() => {
         const usernameInput = document.getElementById('username');
-        if (usernameInput) usernameInput.focus();
+        if (usernameInput) {
+            usernameInput.focus();
+        }
+        window.scrollTo(0, 0);
     }, []);
+
+    if (isAuthenticated) {
+        return <Navigate to="/movies" />;
+    }
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -34,7 +41,7 @@ const Login = () => {
         setError('');
 
         try {
-            const response = await fetch(`${API_URL}/account/login`, {
+            const response = await fetch(`${baseUrl}/account/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -43,26 +50,21 @@ const Login = () => {
             });
 
             const data = await response.json();
-            console.log('Server response:', data); // 🔥 Debugging line
 
             if (response.ok && data.accessToken) {
-                console.log('Storing token:', data.accessToken);  // ✅ Debugging
+    
                 localStorage.setItem('accessToken', data.accessToken);
-                localStorage.setItem('user', JSON.stringify(data));
+                localStorage.setItem('user', JSON.stringify(data.user));
+                
                 navigate('/movies', { replace: true });
             } else {
-                console.error('Error: Token is missing in response:', data);
-                setError(data.message || 'Incorrect login credentials.');
+                setError(data.message || 'Login failed. Please check your credentials.');
             }
         } catch (err) {
+            console.error('Login error:', err);
             setError('Server error. Please try again later.');
         }
     };
-
-
-    if (isAuthenticated) {
-        return <Navigate to="/movies" />;
-    }
 
     return (
         <div className="wrapper">
