@@ -32,31 +32,6 @@ const Sessions = () => {
             return;
         }
 
-        /*// Mock data for testing
-        const mockSessions = [
-            {
-                id: 1,
-                movieTitle: "The Shawshank Redemption",
-                date: "2024-02-15",
-                time: "19:00",
-                room: "Hall 1",
-                ticketTypes: [
-                    {type: "Standard", price: "10.00"},
-                    {type: "VIP", price: "15.00"}
-                ]
-            },
-            {
-                id: 2,
-                movieTitle: "The Godfather",
-                date: "2024-02-15",
-                time: "20:30",
-                room: "Hall 2",
-                ticketTypes: [
-                    {type: "Standard", price: "10.00"},
-                    {type: "VIP", price: "15.00"}
-                ]
-            }
-        ];*/
         const fetchSessions= async () => {
             try {
                 const response = await fetch(`${API_URL}/session`, {
@@ -77,11 +52,6 @@ const Sessions = () => {
                 setLoading(false);
             }
     }
-
-        /*setTimeout(() => {
-            setSessions(mockSessions);
-            setLoading(false);
-        }, 1000);*/
         fetchSessions();
     }, [navigate]);
 
@@ -90,16 +60,6 @@ const Sessions = () => {
         localStorage.removeItem('user');
         navigate('/login');
     };
-
-   /* const handleFilterClick = () => {
-        setIsFilterModalOpen(true);
-    };
-*/
-    /*const handleAddSession = () => {
-        setIsEditing(false);
-        setSelectedSession(null);
-        setIsAddModalOpen(true);
-    };*/
 
     const handleAddSession = async (sessionData) => {
         const token = localStorage.getItem('accessToken');
@@ -173,12 +133,6 @@ const Sessions = () => {
         setIsDeleteModalOpen(true);
     };
 
-   /* const confirmDelete = () => {
-        setSessions(sessions.filter(s => s.id !== sessionToDelete.id));
-        setIsDeleteModalOpen(false);
-        setSessionToDelete(null);
-    };*/
-
     const confirmDelete = async () => {
         if (!sessionToDelete) return;
         const token = localStorage.getItem('accessToken');
@@ -214,25 +168,6 @@ const Sessions = () => {
         setIsInfoModalOpen(true);
     };
 
-   /* const handleSaveSession = (sessionData) => {
-        if (isEditing) {
-            setSessions(sessions.map(session => 
-                session.id === selectedSession.id 
-                ? { ...session, ...sessionData, id: selectedSession.id }
-                : session
-            ));
-        } else {
-            const newSession = {
-                id: Date.now(),
-                ...sessionData
-            };
-            setSessions([...sessions, newSession]);
-        }
-        
-        setIsAddModalOpen(false);
-        setIsEditing(false);
-        setSelectedSession(null);
-    };*/
 
     if (loading) {
         return (

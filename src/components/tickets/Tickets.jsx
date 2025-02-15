@@ -20,22 +20,30 @@ const Tickets = () => {
             return;
         }
 
-        // Mock ticket data
-        const mockTickets = [
-            { 
-              id: 1, 
-              movie: "The Shawshank Redemption", 
-              room: "Room 1", 
-              startTime: "18:00", 
-              price: "$10",
-              imageUrl: "https://randomuser.me/api/portraits/men/1.jpg" 
-            },
-          ];
+        const fetchTickets = async () => {
+            try {
+                const response = await fetch(`${API_URL}/ticket`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
 
-        setTimeout(() => {
-            setTickets(mockTickets);
-            setLoading(false);
-        }, 1000);
+                if (!response.ok) {
+                    throw new Error('Error loading films');
+                }
+
+                const data = await response.json();
+                setMovies(data);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchTickets();
     }, [navigate]);
 
     const handleLogout = () => {
