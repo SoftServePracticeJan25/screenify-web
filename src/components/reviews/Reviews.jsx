@@ -5,6 +5,8 @@ import { IoSearch } from 'react-icons/io5';
 import './Reviews.css';
 import ReviewCard from './ReviewCard';
 
+const API_URL = process.env.REACT_APP_API_URL
+
 const Reviews = () => {
     const navigate = useNavigate();
     const [reviews, setReviews] = useState([]);
@@ -22,36 +24,30 @@ const Reviews = () => {
             return;
         }
 
-        // Mock data for testing
-        const mockReviews = [
-            {
-                id: 1,
-                userId: "USER123",
-                username: "John Doe",
-                userImage: "https://randomuser.me/api/portraits/women/2.jpg",
-                movieId: "MOV456",
-                movieTitle: "The Shawshank Redemption",
-                reviewText: "An absolute masterpiece that stands the test of time. The performances are incredible and the story is deeply moving.",
-                rating: 5,
-                date: "2024-02-10"
-            },
-            {
-                id: 2,
-                userId: "USER124",
-                username: "Jane Smith",
-                userImage: "/api/placeholder/74/74",
-                movieId: "MOV457",
-                movieTitle: "The Godfather",
-                reviewText: "A classic for a reason. The direction, acting, and cinematography are all perfect.",
-                rating: 5,
-                date: "2024-02-11"
-            }
-        ];
+        const fetchReviews = async () => {
+            try {
+                const response = await fetch(`${API_URL}/review`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
 
-        setTimeout(() => {
-            setReviews(mockReviews);
-            setLoading(false);
-        }, 1000);
+                if (!response.ok) {
+                    throw new Error('Error loading reviews');
+                }
+
+                const data = await response.json();
+                setReviews(data);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchReviews();
     }, [navigate]);
 
     const handleLogout = () => {
@@ -69,7 +65,13 @@ const Reviews = () => {
     };
 
     const handleFilterClick = () => {
-        // Implement filtering logic here
+        const filteredReviews = reviews.filter((review) => {
+            const userIdFilter = !filters.userId || review.userId.toString() === filters.userId;
+            const movieIdFilter = !filters.movieId || review.movieId.toString() === filters.movieId;
+            return userIdFilter && movieIdFilter;
+        });
+
+        setReviews(filteredReviews);
         console.log('Applying filters:', filters);
     };
 

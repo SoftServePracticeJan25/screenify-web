@@ -19,7 +19,6 @@ const AddSessionModal = ({ isOpen, onClose, onSave, editingSession }) => {
     useEffect(() => {
         if (isOpen) {
             if (editingSession) {
-                //setSessionData(editingSession);
                 setSessionData({
                     id: editingSession.id || null,
                     title: editingSession.title || '',
