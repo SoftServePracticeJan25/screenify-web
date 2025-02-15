@@ -62,11 +62,6 @@ const Movies = () => {
         navigate('/login');
     };
 
-    /*const handleAddMovie = () => {
-        setIsEditing(false);
-        setSelectedMovie(null);
-        setIsAddModalOpen(true);
-    };*/
 
     const handleAddMovie = async (movieData) => {
         const token = localStorage.getItem('accessToken');
