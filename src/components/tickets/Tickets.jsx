@@ -4,6 +4,8 @@ import './Tickets.css';
 import TicketDropdown from './TicketDropdown';
 import TicketsInfoModal from './TicketsInfoModal';
 
+const API_URL = process.env.REACT_APP_API_URL
+
 const Tickets = () => {
     const navigate = useNavigate();
     const [tickets, setTickets] = useState([]);
@@ -31,11 +33,11 @@ const Tickets = () => {
                 });
 
                 if (!response.ok) {
-                    throw new Error('Error loading films');
+                    throw new Error('Error loading tickets');
                 }
 
                 const data = await response.json();
-                setMovies(data);
+                setTickets(data);
             } catch (err) {
                 setError(err.message);
             } finally {
@@ -50,6 +52,48 @@ const Tickets = () => {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('user');
         navigate('/login');
+    };
+
+    const handleDeleteTicket = (ticket) => {
+        setTicketToDelete(ticket);
+        setIsDeleteModalOpen(true);
+    };
+
+    const confirmDelete = async () => {
+        if (!ticketToDelete) return;
+
+        const token = localStorage.getItem('accessToken');
+
+        if (!token) {
+            console.error('No token found, redirecting to login.');
+            navigate('/login');
+            return;
+        }
+
+
+        console.log('Using token:', token);
+
+        try {
+            const response = await fetch(`${API_URL}/movies/${ticketToDelete.id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                const errorResponse = await response.json();
+                console.error('Server response:', errorResponse);
+                throw new Error(errorResponse.message || 'Failed to cancel ticket');
+            }
+
+            setTickets((prevTickets) => prevTickets.filter((m) => m.id !== ticketToDelete.id));
+            setIsDeleteModalOpen(false);
+            setTicketToDelete(null);
+        } catch (err) {
+            setError(err.message);
+        }
     };
 
     const handleShowInfo = (ticket) => {
