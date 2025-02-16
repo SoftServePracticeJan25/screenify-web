@@ -4,51 +4,76 @@ import { getGenreIdByName } from '../../utils/genreUtils';
 import { IoMdClose } from "react-icons/io";
 
 const AddMovieModal = ({ isOpen, onClose, onSave, editingMovie }) => {
-    const [movieData, setMovieData] = useState({
+    const initialState = {
+        id: null,
         title: '',
         image: '',
         genres: [],
         duration: '',
         cast: [{ role: '', actor: '' }]
-    });
+    };
+
+    const [movieData, setMovieData] = useState(initialState);
     const [imagePreview, setImagePreview] = useState(null);
+    const [errors, setErrors] = useState({});
 
     useEffect(() => {
         if (isOpen) {
             if (editingMovie) {
+                const formattedGenres = editingMovie.genres?.map(genre => ({
+                    id: typeof genre === 'object' ? genre.id : genre,
+                    name: typeof genre === 'object' ? genre.name : ''
+                })) || [];
+
                 setMovieData({
-                    id: editingMovie.id || null, // Ensure ID exists
+                    id: editingMovie.id,
                     title: editingMovie.title || '',
                     image: editingMovie.image || '',
-                    genres: Array.isArray(editingMovie.genres) ? editingMovie.genres : [], // Ensure genres is an array
+                    genres: formattedGenres,
                     duration: editingMovie.duration || '',
-                    cast: Array.isArray(editingMovie.cast) ? editingMovie.cast : [{ role: '', actor: '' }] // Ensure cast is an array
+                    cast: Array.isArray(editingMovie.cast) && editingMovie.cast.length > 0
+                        ? editingMovie.cast
+                        : [{ role: '', actor: '' }]
                 });
                 setImagePreview(editingMovie.image || null);
             } else {
-                setMovieData({
-                    id: null,
-                    title: '',
-                    image: '',
-                    genres: [],
-                    duration: '',
-                    cast: [{ role: '', actor: '' }]
-                });
+                setMovieData(initialState);
                 setImagePreview(null);
             }
+            setErrors({});
         }
     }, [isOpen, editingMovie]);
 
-    const handleSave = () => {
-        const formattedMovieData = {
-            ...movieData,
-            genres: movieData.genres.map(g => g.id)
-        };
+    const validateForm = () => {
+        const newErrors = {};
+        if (!movieData.title.trim()) newErrors.title = 'Title is required';
+        if (movieData.genres.length === 0) newErrors.genres = 'At least one genre is required';
+        // Приводим duration к строке перед вызовом trim()
+        if (!String(movieData.duration).trim()) newErrors.duration = 'Duration is required';
 
-        onSave(formattedMovieData);
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
     };
 
+    const handleGenreChange = (e) => {
+        const genreNames = e.target.value.split(',')
+            .map(name => name.trim())
+            .filter(name => name);
 
+        const updatedGenres = genreNames.map(name => {
+            const genreId = getGenreIdByName(name);
+            return genreId ? { id: genreId, name } : null;
+        }).filter(genre => genre !== null);
+
+        setMovieData(prev => ({
+            ...prev,
+            genres: updatedGenres
+        }));
+
+        if (errors.genres) {
+            setErrors(prev => ({ ...prev, genres: '' }));
+        }
+    };
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -62,6 +87,12 @@ const AddMovieModal = ({ isOpen, onClose, onSave, editingMovie }) => {
         }
     };
 
+    const handleCastChange = (index, field, value) => {
+        const newCast = [...movieData.cast];
+        newCast[index][field] = value;
+        setMovieData(prev => ({ ...prev, cast: newCast }));
+    };
+
     const handleAddCastMember = () => {
         setMovieData(prev => ({
             ...prev,
@@ -69,17 +100,26 @@ const AddMovieModal = ({ isOpen, onClose, onSave, editingMovie }) => {
         }));
     };
 
-    const handleCastChange = (index, field, value) => {
-        const newCast = [...movieData.cast];
-        newCast[index][field] = value;
-        setMovieData(prev => ({ ...prev, cast: newCast }));
+    const handleRemoveCastMember = (index) => {
+        if (movieData.cast.length > 1) {
+            setMovieData(prev => ({
+                ...prev,
+                cast: prev.cast.filter((_, i) => i !== index)
+            }));
+        }
     };
 
-    const handleRemoveCastMember = (index) => {
-        setMovieData(prev => ({
-            ...prev,
-            cast: prev.cast.filter((_, i) => i !== index)
-        }));
+    const handleSave = () => {
+        if (validateForm()) {
+            const formattedData = {
+                ...movieData,
+                // Приводим duration к строке
+                duration: String(movieData.duration).trim(),
+                // Преобразуем жанры в массив идентификаторов
+                genres: movieData.genres.map(genre => genre.id)
+            };
+            onSave(formattedData);
+        }
     };
 
     if (!isOpen) return null;
@@ -90,7 +130,7 @@ const AddMovieModal = ({ isOpen, onClose, onSave, editingMovie }) => {
                 <button className="close-button" onClick={onClose}>
                     <IoMdClose />
                 </button>
-                
+
                 <div className="modal-body">
                     <div className="image-section">
                         <div className="image-upload-container">
@@ -98,7 +138,12 @@ const AddMovieModal = ({ isOpen, onClose, onSave, editingMovie }) => {
                                 <img src={imagePreview} alt="Movie preview" className="image-preview" />
                             ) : (
                                 <div className="image-placeholder">
-                                    <input type="file" accept="image/*" onChange={handleImageChange} id="image-upload" />
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleImageChange}
+                                        id="image-upload"
+                                    />
                                     <label htmlFor="image-upload">Click to upload image</label>
                                 </div>
                             )}
@@ -106,33 +151,31 @@ const AddMovieModal = ({ isOpen, onClose, onSave, editingMovie }) => {
                     </div>
 
                     <div className="details-section">
-                    <div className="input-group">
-                        <label htmlFor="title">Title</label>
-                        <input 
-                            id="title"
-                            type="text" 
-                            value={movieData.title} 
-                            onChange={(e) => setMovieData(prev => ({ ...prev, title: e.target.value }))} 
-                        />
-                    </div>
+                        <div className="input-group">
+                            <label htmlFor="title">Title</label>
+                            <input
+                                id="title"
+                                type="text"
+                                value={movieData.title}
+                                onChange={(e) => {
+                                    setMovieData(prev => ({ ...prev, title: e.target.value }));
+                                    if (errors.title) setErrors(prev => ({ ...prev, title: '' }));
+                                }}
+                                className={errors.title ? 'error' : ''}
+                            />
+                            {errors.title && <span className="error-message">{errors.title}</span>}
+                        </div>
 
                         <div className="input-group">
                             <label>Genre</label>
                             <input
                                 type="text"
-                                value={movieData.genres.map(g => (typeof g === 'object' ? g.name : g)).join(', ')}
-                                onChange={(e) => {
-                                    const genreNames = e.target.value.split(',').map(name => name.trim());
-
-                                    setMovieData(prev => ({
-                                        ...prev,
-                                        genres: genreNames.map(name => {
-                                            const genreId = getGenreIdByName(name);
-                                            return genreId ? { id: genreId, name } : { name };
-                                        })
-                                    }));
-                                }}
+                                value={movieData.genres.map(g => g.name).join(', ')}
+                                onChange={handleGenreChange}
+                                placeholder="Enter genres separated by commas"
+                                className={errors.genres ? 'error' : ''}
                             />
+                            {errors.genres && <span className="error-message">{errors.genres}</span>}
                         </div>
 
                         <div className="input-group">
@@ -140,29 +183,39 @@ const AddMovieModal = ({ isOpen, onClose, onSave, editingMovie }) => {
                             <input
                                 type="text"
                                 value={movieData.duration}
-                                onChange={(e) => setMovieData(prev => ({...prev, duration: e.target.value}))}
+                                onChange={(e) => {
+                                    setMovieData(prev => ({ ...prev, duration: e.target.value }));
+                                    if (errors.duration) setErrors(prev => ({ ...prev, duration: '' }));
+                                }}
                                 placeholder="2h 30min"
+                                className={errors.duration ? 'error' : ''}
                             />
+                            {errors.duration && <span className="error-message">{errors.duration}</span>}
                         </div>
 
                         <div className="cast-section">
                             <label>Cast</label>
                             {movieData.cast.map((member, index) => (
                                 <div key={index} className="cast-member">
-                                    <input 
-                                        type="text" 
-                                        placeholder="Role" 
-                                        value={member.role} 
-                                        onChange={(e) => handleCastChange(index, 'role', e.target.value)} 
+                                    <input
+                                        type="text"
+                                        placeholder="Role"
+                                        value={member.role}
+                                        onChange={(e) => handleCastChange(index, 'role', e.target.value)}
                                     />
-                                    <input 
-                                        type="text" 
-                                        placeholder="Actor" 
-                                        value={member.actor} 
-                                        onChange={(e) => handleCastChange(index, 'actor', e.target.value)} 
+                                    <input
+                                        type="text"
+                                        placeholder="Actor"
+                                        value={member.actor}
+                                        onChange={(e) => handleCastChange(index, 'actor', e.target.value)}
                                     />
                                     {movieData.cast.length > 1 && (
-                                        <button className="remove-cast" onClick={() => handleRemoveCastMember(index)}>×</button>
+                                        <button
+                                            className="remove-cast"
+                                            onClick={() => handleRemoveCastMember(index)}
+                                        >
+                                            ×
+                                        </button>
                                     )}
                                 </div>
                             ))}

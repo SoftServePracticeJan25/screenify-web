@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { FiFilter } from 'react-icons/fi';
 import { IoMdAdd } from "react-icons/io";
 import './Sessions.css';
-import { getGenreIdByName } from '../../utils/genreUtils';
 import AddSessionModal from './AddSessionModal';
 import MovieDropdown from '../movies/MovieDropdown'; 
 import MovieInfoModal from '../movies/MovieInfoModal'; 

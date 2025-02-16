@@ -62,32 +62,10 @@ const Movies = () => {
         navigate('/login');
     };
 
-
-    const handleAddMovie = async (movieData) => {
-        const token = localStorage.getItem('accessToken');
-        if (!token) {
-            console.error('No token found, redirecting to login.');
-            navigate('/login');
-            return;
-        }
-        try {
-            const response = await fetch(`${API_URL}/movies`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(movieData)
-            });
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Failed to add movie');
-            }
-            const data = await response.json();
-            return data;
-        } catch (err) {
-            console.error('Error adding movie:', err);
-        }
+    const handleAddMovie = () => {
+        setIsEditing(false);
+        setSelectedMovie(null);
+        setIsAddModalOpen(true);
     };
 
     const handleSaveMovie = async (movieData) => {
