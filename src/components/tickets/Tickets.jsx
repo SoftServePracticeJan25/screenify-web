@@ -53,7 +53,7 @@ const Tickets = () => {
         localStorage.removeItem('user');
         navigate('/login');
     };
-
+/*
     const handleDeleteTicket = (ticket) => {
         setTicketToDelete(ticket);
         setIsDeleteModalOpen(true);
@@ -95,7 +95,7 @@ const Tickets = () => {
             setError(err.message);
         }
     };
-
+*/
     const handleShowInfo = (ticket) => {
         setSelectedTicket(ticket);
         setIsInfoModalOpen(true);

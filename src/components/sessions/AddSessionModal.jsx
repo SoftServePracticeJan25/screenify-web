@@ -21,13 +21,14 @@ const AddSessionModal = ({ isOpen, onClose, onSave, editingSession }) => {
             if (editingSession) {
                 setSessionData({
                     id: editingSession.id || null,
-                    title: editingSession.title || '',
+                    movieTitle: editingSession.movieTitle || '',
                     image: editingSession.image || '',
-                    genres: Array.isArray(editingMovie.genres) ? editingMovie.genres : [],
-                    duration: editingMovie.duration || '',
-                    time: editingMovie.time || '',
-                    room: editingMovie.room || '',
-                    //ticketTypes:
+                    genre: Array.isArray(editingSession.genres) ? editingSession.genres : [],
+                    duration: editingSession.duration || '',
+                    date: editingSession.date || '',
+                    time: editingSession.time || '',
+                    room: editingSession.room || '',
+                    ticketTypes: editingSession.ticketTypes || [{ type: '', price: '' }],
                 })
                 setImagePreview(editingSession.image || null);
             } else {

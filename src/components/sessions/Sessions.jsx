@@ -61,31 +61,14 @@ const Sessions = () => {
         navigate('/login');
     };
 
-    const handleAddSession = async (sessionData) => {
-        const token = localStorage.getItem('accessToken');
-        if (!token) {
-            console.error('No token found, redirecting to login.');
-            navigate('/login');
-            return;
-        }
-        try {
-            const response = await fetch(`${API_URL}/session`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(sessionData)
-            });
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Failed to add session');
-            }
-            const data = await response.json();
-            return data;
-        } catch (err) {
-            console.error('Error adding session:', err);
-        }
+    const handleFilterClick = () => {
+        setIsFilterModalOpen(true);
+    };
+
+    const handleAddSession = () => {
+        setIsEditing(false);
+        setSelectedSession(null);
+        setIsAddModalOpen(true);
     };
 
     const handleSaveSession = async (sessionData) => {
@@ -96,8 +79,8 @@ const Sessions = () => {
             return;
         }
         try {
-            const response = await fetch(`${API_URL}/session/${sessionData.id}`, {
-                method: 'PUT',
+            const response = await fetch(`${API_URL}/session/${sessionData.id ? sessionData.id : ''}`, {
+                method: sessionData.id ? 'PUT' : 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -106,18 +89,16 @@ const Sessions = () => {
             });
             const data = await response.json();
             if (!response.ok) {
-                throw new Error(data.message || 'Failed to update session');
+                throw new Error(data.message || 'Failed to save session');
             }
-            setSessions((prevSessions) =>
-                prevSessions.map((session) =>
-                    session.id === data.id ? data : session
-                )
-            );
+            if (sessionData.id) {
+                setSessions(prevSessions => prevSessions.map(session => session.id === data.id ? data : session));
+            } else {
+                setSessions(prevSessions => [...prevSessions, data]);
+            }
             setIsAddModalOpen(false);
-            setIsEditing(false);
-            setSelectedSession(null);
         } catch (err) {
-            console.error('Error updating session:', err);
+            console.error('Error saving session:', err);
             setError(err.message);
         }
     };
@@ -167,7 +148,6 @@ const Sessions = () => {
         setSelectedSession(session);
         setIsInfoModalOpen(true);
     };
-
 
     if (loading) {
         return (
