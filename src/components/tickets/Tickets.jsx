@@ -4,7 +4,7 @@ import './Tickets.css';
 import TicketDropdown from './TicketDropdown';
 import TicketsInfoModal from './TicketsInfoModal';
 
-const API_URL = process.env.REACT_APP_API_URL
+const API_URL = "https://screenify-fzh4dgfpanbrbeea.polandcentral-01.azurewebsites.net/api"
 
 const Tickets = () => {
     const navigate = useNavigate();

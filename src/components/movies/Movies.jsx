@@ -8,7 +8,7 @@ import MovieDropdown from './MovieDropdown';
 import MovieInfoModal from './MovieInfoModal';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 
-const API_URL = process.env.REACT_APP_API_URL
+const API_URL = "https://screenify-fzh4dgfpanbrbeea.polandcentral-01.azurewebsites.net/api"
 
 const Movies = () => {
     const navigate = useNavigate();

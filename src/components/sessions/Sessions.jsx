@@ -4,12 +4,12 @@ import { FiFilter } from 'react-icons/fi';
 import { IoMdAdd } from "react-icons/io";
 import './Sessions.css';
 import AddSessionModal from './AddSessionModal';
-import MovieDropdown from '../movies/MovieDropdown'; 
-import MovieInfoModal from '../movies/MovieInfoModal'; 
-import DeleteConfirmationModal from '../movies/DeleteConfirmationModal'; 
+import MovieDropdown from '../movies/MovieDropdown';
+import MovieInfoModal from '../movies/MovieInfoModal';
+import DeleteConfirmationModal from '../movies/DeleteConfirmationModal';
 import FilterModal from './FilterModal';
 
-const API_URL = process.env.REACT_APP_API_URL
+const API_URL = "https://screenify-fzh4dgfpanbrbeea.polandcentral-01.azurewebsites.net/api"
 
 const Sessions = () => {
     const navigate = useNavigate();
@@ -206,14 +206,11 @@ const Sessions = () => {
         {sessions.map((session, index) => (
             <tr key={session.id}>
                 <td>{index + 1}</td>
-                <td>{session.movieTitle}</td>
-                <td>{session.room}</td>
-                <td>{`${session.date} ${session.time}`}</td>
+                <td>{session.movieId}</td>
+                <td>{session.roomId}</td>
+                <td>{`${session.startTime}`}</td>
                 <td>
-                    {session.ticketTypes.length > 0 
-                        ? `$${session.ticketTypes[0].price}${session.ticketTypes.length > 1 ? '+' : ''}`
-                        : '-'
-                    }
+                    {session.price ? `$${session.price}` : '-'}
                 </td>
                 <td>
                     <MovieDropdown
@@ -230,7 +227,7 @@ const Sessions = () => {
                 </div>
             </div>
 
-            <AddSessionModal 
+            <AddSessionModal
                 isOpen={isAddModalOpen}
                 onClose={() => {
                     setIsAddModalOpen(false);
@@ -240,7 +237,7 @@ const Sessions = () => {
                 onSave={handleSaveSession}
                 editingSession={isEditing ? selectedSession || {} : null}
             />
-            
+
             <MovieInfoModal
                 isOpen={isInfoModalOpen}
                 onClose={() => {

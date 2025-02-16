@@ -12,7 +12,8 @@ const AddSessionModal = ({ isOpen, onClose, onSave, editingSession }) => {
         date: '',
         time: '',
         room: '',
-        ticketTypes: [{ type: '', price: '' }]
+        price: ''
+        //ticketTypes: [{ type: '', price: '' }]
     });
     const [imagePreview, setImagePreview] = useState(null);
 
@@ -28,7 +29,8 @@ const AddSessionModal = ({ isOpen, onClose, onSave, editingSession }) => {
                     date: editingSession.date || '',
                     time: editingSession.time || '',
                     room: editingSession.room || '',
-                    ticketTypes: editingSession.ticketTypes || [{ type: '', price: '' }],
+                    price: editingSession.price || '',
+                    //ticketTypes: editingSession.ticketTypes || [{ type: '', price: '' }],
                 })
                 setImagePreview(editingSession.image || null);
             } else {
@@ -41,7 +43,8 @@ const AddSessionModal = ({ isOpen, onClose, onSave, editingSession }) => {
                     date: '',
                     time: '',
                     room: '',
-                    ticketTypes: [{ type: '', price: '' }]
+                    price: ''
+                    //ticketTypes: [{ type: '', price: '' }]
                 });
                 setImagePreview(null);
             }
@@ -51,7 +54,8 @@ const AddSessionModal = ({ isOpen, onClose, onSave, editingSession }) => {
     const handleSave = () => {
         const formattedSessionData = {
             ...sessionData,
-            genres: sessionData.genres.map(g => g.id)
+            genres: sessionData.genres.map(g => g.id),
+            ticketTypes: undefined  // Убираем ticketTypes
         };
 
         onSave(formattedSessionData);
@@ -168,11 +172,11 @@ const AddSessionModal = ({ isOpen, onClose, onSave, editingSession }) => {
                         </div>
 
                         <div className="input-group">
-                            <label>Room</label>
-                            <input 
-                                type="text" 
-                                value={sessionData.room}
-                                onChange={(e) => setSessionData(prev => ({ ...prev, room: e.target.value }))}
+                            <label>Price</label>
+                            <input
+                                type="number"
+                                value={sessionData.price}
+                                onChange={(e) => setSessionData(prev => ({ ...prev, price: e.target.value }))}
                             />
                         </div>
 
