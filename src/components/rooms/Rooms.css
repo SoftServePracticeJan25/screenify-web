@@ -66,10 +66,10 @@
 .seats-grid {
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Center seats vertically */
+    justify-content: center;
     gap: 0.3rem;
     align-items: center;
-    margin-bottom: 1rem; /* Add margin for spacing below seats */
+    margin-bottom: 1rem;
 }
 
 .seat-row {

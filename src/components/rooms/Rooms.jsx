@@ -35,7 +35,7 @@ const Rooms = () => {
   if (error) return <div className="error-message">{error}</div>;
 
   const Room = ({ id, name, seatsAmount, cinemaTypeName = '' }) => {
-    const roomClass = `${cinemaTypeName.toLowerCase()}-room`; // Преобразуем тип зала в класс
+    const roomClass = `${cinemaTypeName.toLowerCase()}-room`;
 
     return (
         <div className={`room-container ${roomClass}`}>
