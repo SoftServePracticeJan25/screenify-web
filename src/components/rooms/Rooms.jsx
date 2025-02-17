@@ -42,9 +42,9 @@ const Rooms = () => {
           <h2>{name}</h2>
           <div className="screen">Screen</div>
           <div className="seats-grid">
-            {Array.from({ length: 5 }).map((_, rowIndex) => (
+            {Array.from({ length: 8 }).map((_, rowIndex) => (
                 <div key={rowIndex} className="seat-row">
-                  {Array.from({ length: 6 }).map((_, seatIndex) => (
+                  {Array.from({ length: 8 }).map((_, seatIndex) => (
                       <div key={seatIndex} className={`seat ${roomClass}`}>
                         <MdEventSeat />
                       </div>

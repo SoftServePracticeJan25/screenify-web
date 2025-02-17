@@ -31,8 +31,13 @@ const UsersInfoModal = ({ isOpen, onClose, user }) => {
                     </div>
 
                     <div className={styles.infoGroup}>
-                        <span className={styles.infoLabel}>Amount of Tickets</span>
-                        <span className={styles.infoValue}><br/>{user.tickets}</span>
+                        <span className={styles.infoLabel}>Reviews</span>
+                        <span className={styles.infoValue}><br/>{user.reviewCount}</span>
+                    </div>
+
+                    <div className={styles.infoGroup}>
+                        <span className={styles.infoLabel}>Transactions</span>
+                        <span className={styles.infoValue}><br/>{user.transactionCount}</span>
                     </div>
                 </div>
             </div>

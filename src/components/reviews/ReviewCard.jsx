@@ -30,17 +30,17 @@ const ReviewCard = ({ review }) => {
   return (
     <div className="review-card">
       <div className="review-header">
-        <UserAvatar 
-          src={review.userImage} 
-          username={review.username} 
+        <UserAvatar
+          src={review.userImage}
+          username={review.username}
           className="user-image"
         />
         <div className="header-info">
           <span className="username">{review.username}</span>
-          <span className="id">ID: {review.userId}</span>
+          <span className="id">User ID: {review.userId}</span>
           <span className="separator">•</span>
           <span className="movie-title">{review.movieTitle}</span>
-          <span className="id">ID: {review.movieId}</span>
+          <span className="id">Movie ID: {review.movieId}</span>
         </div>
       </div>
       <div className="review-content">

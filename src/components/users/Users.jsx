@@ -38,7 +38,7 @@ const Users = () => {
                 }
 
                 const userData = await response.json();
-                setUsers([userData]); 
+                setUsers([userData]);
             } catch (err) {
                 setError(err.message);
             } finally {

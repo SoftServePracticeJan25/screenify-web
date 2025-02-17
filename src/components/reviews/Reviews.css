@@ -127,7 +127,7 @@
     background: linear-gradient(to right, #FAB33F, #F9EB32); 
     color: transparent; 
     -webkit-background-clip: text; 
-    background-clip: text; 
+    background-clip: text;
 }
 
 .movie-title {
@@ -142,14 +142,14 @@
 }
 
 .separator {
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.8);
     font-size: 14px;
 }
 
 .review-content {
     font-size: 14px;
     line-height: 1.6;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.8);
     margin-left: 90px;
     font-weight: 500;
     font-family: 'Lato', sans-serif; 
