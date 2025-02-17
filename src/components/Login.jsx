@@ -6,7 +6,7 @@ import { MdVpnKey } from "react-icons/md";
 
 
 const Login = () => {
-    const baseUrl = process.env.REACT_APP_API_URL;
+    const baseUrl = "https://screenify-fzh4dgfpanbrbeea.polandcentral-01.azurewebsites.net/api";
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         username: '',

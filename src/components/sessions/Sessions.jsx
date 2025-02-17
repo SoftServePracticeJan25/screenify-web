@@ -9,13 +9,12 @@ import MovieInfoModal from '../movies/MovieInfoModal';
 import DeleteConfirmationModal from '../movies/DeleteConfirmationModal';
 import FilterModal from './FilterModal';
 
-const API_URL =  "https://screenify-fzh4dgfpanbrbeea.polandcentral-01.azurewebsites.net/api"
+const API_URL =  "https://screenify-fzh4dgfpanbrbeea.polandcentral-01.azurewebsites.net/api";
 
 const Sessions = () => {
     const navigate = useNavigate();
     const [sessions, setSessions] = useState([]);
     const [movies, setMovies] = useState([]);
-    const [rooms, setRooms] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
