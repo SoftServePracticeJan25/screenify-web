@@ -148,7 +148,7 @@ const Tickets = () => {
                                     <td>{ticket.movie}</td>
                                     <td>{ticket.room}</td>
                                     <td>{ticket.startTime}</td>
-                                    <td>{ticket.price}</td>
+                                    <td>{ticket.price ? `$${ticket.price}` : '-'}</td>
                                     <td>
                                         <TicketDropdown
                                             ticket={ticket}

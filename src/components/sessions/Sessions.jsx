@@ -9,11 +9,13 @@ import MovieInfoModal from '../movies/MovieInfoModal';
 import DeleteConfirmationModal from '../movies/DeleteConfirmationModal';
 import FilterModal from './FilterModal';
 
-const API_URL = "https://screenify-fzh4dgfpanbrbeea.polandcentral-01.azurewebsites.net/api"
+const API_URL =  "https://screenify-fzh4dgfpanbrbeea.polandcentral-01.azurewebsites.net/api"
 
 const Sessions = () => {
     const navigate = useNavigate();
     const [sessions, setSessions] = useState([]);
+    const [movies, setMovies] = useState([]);
+    const [rooms, setRooms] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -31,27 +33,53 @@ const Sessions = () => {
             return;
         }
 
-        const fetchSessions= async () => {
+        const fetchData = async () => {
             try {
-                const response = await fetch(`${API_URL}/session`, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
-                if (!response.ok) {
-                    throw new Error('Error loading sessions');
+                // Fetch both sessions and movies in parallel
+                const [sessionsResponse, moviesResponse] = await Promise.all([
+                    fetch(`${API_URL}/session`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    }),
+                    fetch(`${API_URL}/movies`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                ]);
+
+                if (!sessionsResponse.ok || !moviesResponse.ok) {
+                    throw new Error('Error loading data');
                 }
-                const data = await response.json();
-                setSessions(data);
+
+                const [sessionsData, moviesData] = await Promise.all([
+                    sessionsResponse.json(),
+                    moviesResponse.json()
+                ]);
+
+                // Create a map of movie IDs to movie titles for quick lookup
+                const movieMap = new Map(moviesData.map(movie => [movie.id, movie]));
+
+                // Combine session data with movie data
+                const enrichedSessions = sessionsData.map(session => ({
+                    ...session,
+                    movieTitle: movieMap.get(session.movieId)?.title || 'Unknown Movie',
+                    movie: movieMap.get(session.movieId)
+                }));
+
+                setSessions(enrichedSessions);
+                setMovies(moviesData);
             } catch (err) {
                 setError(err.message);
             } finally {
                 setLoading(false);
             }
-    }
-        fetchSessions();
+        };
+
+        fetchData();
     }, [navigate]);
 
     const handleLogout = () => {
@@ -173,6 +201,7 @@ const Sessions = () => {
                     <li><a href="/rooms">Rooms</a></li>
                     <li><a href="/tickets">Tickets</a></li>
                     <li><a href="/reviews">Reviews</a></li>
+                    <li><a href="/statistics">Statistics</a></li>
                     <li><button onClick={handleLogout} className="logout-btn">LOG OUT</button></li>
                 </ul>
             </nav>
@@ -191,39 +220,37 @@ const Sessions = () => {
                 </div>
 
                 <div className="sessions-table">
-                <table>
-    <thead>
-        <tr>
-            <th>№</th>
-            <th>Movie Title</th>
-            <th>Room</th>
-            <th>Start Time</th>
-            <th>Price</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        {sessions.map((session, index) => (
-            <tr key={session.id}>
-                <td>{index + 1}</td>
-                <td>{session.movieId}</td>
-                <td>{session.roomId}</td>
-                <td>{`${session.startTime}`}</td>
-                <td>
-                    {session.price ? `$${session.price}` : '-'}
-                </td>
-                <td>
-                    <MovieDropdown
-                        movie={session}
-                        onEdit={handleEditSession}
-                        onDelete={handleDeleteSession}
-                        onInfo={handleShowInfo}
-                    />
-                </td>
-            </tr>
-        ))}
-    </tbody>
-</table>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Movie Title</th>
+                            <th>Room</th>
+                            <th>Start Time</th>
+                            <th>Price</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {sessions.map((session, index) => (
+                            <tr key={session.id}>
+                                <td>{index + 1}</td>
+                                <td>{session.movieTitle}</td>
+                                <td>{session.roomId}</td>
+                                <td>{session.startTime}</td>
+                                <td>{session.price ? `$${session.price}` : '-'}</td>
+                                <td>
+                                    <MovieDropdown
+                                        movie={session}
+                                        onEdit={handleEditSession}
+                                        onDelete={handleDeleteSession}
+                                        onInfo={() => handleShowInfo(session.movie)}
+                                    />
+                                </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
