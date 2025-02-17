@@ -236,7 +236,7 @@ const Sessions = () => {
                                 <tr key={session.id}>
                                     <td>{index + 1}</td>
                                     <td>{session.movieTitle}</td>
-                                    <td>{session.roomId}</td>
+                                    <td>{session.roomName}</td>
                                     <td>{session.startTime}</td>
                                     <td>{session.price ? `$${session.price}` : '-'}</td>
                                     <td>
