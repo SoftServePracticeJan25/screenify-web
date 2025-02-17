@@ -9,7 +9,7 @@ import MovieInfoModal from '../movies/MovieInfoModal';
 import DeleteConfirmationModal from '../movies/DeleteConfirmationModal';
 import FilterModal from './FilterModal';
 
-const API_URL =  "https://screenify-fzh4dgfpanbrbeea.polandcentral-01.azurewebsites.net/api";
+const API_URL =  "https://screenify-fzh4dgfpanbrbeea.polandcentral-01.azurewebsites.net/api"
 
 const Sessions = () => {
     const navigate = useNavigate();
@@ -175,6 +175,7 @@ const Sessions = () => {
         setIsInfoModalOpen(true);
     };
 
+    
     if (loading) {
         return (
             <div className="loading">
@@ -221,33 +222,33 @@ const Sessions = () => {
                 <div className="sessions-table">
                     <table>
                         <thead>
-                        <tr>
-                            <th>№</th>
-                            <th>Movie Title</th>
-                            <th>Room</th>
-                            <th>Start Time</th>
-                            <th>Price</th>
-                            <th></th>
-                        </tr>
+                            <tr>
+                                <th>№</th>
+                                <th>Movie Title</th>
+                                <th>Room</th>
+                                <th>Start Time</th>
+                                <th>Price</th>
+                                <th></th>
+                            </tr>
                         </thead>
                         <tbody>
-                        {sessions.map((session, index) => (
-                            <tr key={session.id}>
-                                <td>{index + 1}</td>
-                                <td>{session.movieTitle}</td>
-                                <td>{session.roomId}</td>
-                                <td>{session.startTime}</td>
-                                <td>{session.price ? `$${session.price}` : '-'}</td>
-                                <td>
-                                    <MovieDropdown
-                                        movie={session}
-                                        onEdit={handleEditSession}
-                                        onDelete={handleDeleteSession}
-                                        onInfo={() => handleShowInfo(session.movie)}
-                                    />
-                                </td>
-                            </tr>
-                        ))}
+                            {sessions.map((session, index) => (
+                                <tr key={session.id}>
+                                    <td>{index + 1}</td>
+                                    <td>{session.movieTitle}</td>
+                                    <td>{session.roomId}</td>
+                                    <td>{session.startTime}</td>
+                                    <td>{session.price ? `$${session.price}` : '-'}</td>
+                                    <td>
+                                        <MovieDropdown
+                                            movie={session}
+                                            onEdit={handleEditSession}
+                                            onDelete={handleDeleteSession}
+                                            onInfo={() => handleShowInfo(session.movie)}
+                                        />
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div>

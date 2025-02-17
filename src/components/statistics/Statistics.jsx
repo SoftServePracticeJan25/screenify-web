@@ -7,15 +7,80 @@ import MovieDropdown from '../movies/MovieDropdown';
 import MovieStatCard from './MovieStatCard';
 import './Statistics.css';
 
+const API_URL = "https://screenify-fzh4dgfpanbrbeea.polandcentral-01.azurewebsites.net/api";
+
 const Statistics = () => {
     const navigate = useNavigate();
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
     const [selectedView, setSelectedView] = useState('best-selling');
     const [statistics, setStatistics] = useState([]);
-    const [movieStats, setMovieStats] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [filterTrigger, setFilterTrigger] = useState(0); 
+
+    const fetchStatisticsData = async (token, formattedStartDate, formattedEndDate) => {
+        let endpoint;
+        switch(selectedView) {
+            case 'best-selling':
+                endpoint = '/statistic/best-selling-movies';
+                break;
+            case 'best-rated':
+                endpoint = '/statistic/best-rated-movies';
+                break;
+            case 'popular-genres':
+                endpoint = '/statistic/most-popular-genres';
+                break;
+            default:
+                throw new Error('Invalid view selected');
+        }
+
+        const response = await fetch(
+            `${API_URL}${endpoint}?StartDate=${formattedStartDate}&EndDate=${formattedEndDate}`,
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch statistics');
+        }
+
+        return response.json();
+    };
+
+    const fetchMoviesData = async (token) => {
+        const response = await fetch(`${API_URL}/movies`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch movies');
+        }
+
+        return response.json();
+    };
+
+    const fetchGenresData = async (token) => {
+        const response = await fetch(`${API_URL}/genres`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch genres');
+        }
+
+        return response.json();
+    };
 
     useEffect(() => {
         const token = localStorage.getItem('accessToken');
@@ -24,57 +89,55 @@ const Statistics = () => {
             return;
         }
 
-        const mockStats = [
-            {
-                id: 1,
-                genre: "Action",
-                genreId: "ACT001",
-                ticketsSold: 1500
-            },
-            {
-                id: 2,
-                genre: "Drama",
-                genreId: "DRA001",
-                ticketsSold: 1200
-            },
-            {
-                id: 3,
-                genre: "Comedy",
-                genreId: "COM001",
-                ticketsSold: 900
-            }
-        ];
+        const fetchData = async () => {
+            try {
+                setLoading(true);
+                setError('');
 
-        const mockMovieStats = [
-            {
-                id: 1,
-                title: "The Dark Knight",
-                movieId: "MOV001",
-                ticketsSold: 1500,
-                image: "/api/placeholder/74/74"
-            },
-            {
-                id: 2,
-                title: "Inception",
-                movieId: "MOV002",
-                ticketsSold: 1200,
-                image: "/api/placeholder/74/74"
-            },
-            {
-                id: 3,
-                title: "Interstellar",
-                movieId: "MOV003",
-                ticketsSold: 900,
-                image: "/api/placeholder/74/74"
-            }
-        ];
+                const formattedStartDate = startDate.toISOString();
+                const formattedEndDate = endDate.toISOString();
 
-        setTimeout(() => {
-            setStatistics(mockStats);
-            setMovieStats(mockMovieStats);
-            setLoading(false);
-        }, 1000);
-    }, [navigate]);
+            
+                const [statsData, moviesData, genresData] = await Promise.all([
+                    fetchStatisticsData(token, formattedStartDate, formattedEndDate),
+                    fetchMoviesData(token),
+                    fetchGenresData(token)
+                ]);
+
+                const movieMap = new Map(moviesData.map(movie => [movie.id, movie]));
+                const genreMap = new Map(genresData.map(genre => [genre.id, genre]));
+
+                const enrichedData = statsData.map(stat => {
+                    if (selectedView === 'popular-genres') {
+                        const genre = genreMap.get(stat.genreId);
+                        return {
+                            ...stat,
+                            id: stat.genreId,
+                            genre: genre?.name || 'Unknown Genre'
+                        };
+                    } else {
+                        const movie = movieMap.get(stat.movieId);
+                        return {
+                            ...stat,
+                            id: stat.movieId,
+                            title: movie?.title || 'Unknown Movie',
+                            movie: movie,
+                            image: movie?.image || "/api/placeholder/74/74"
+                        };
+                    }
+                });
+
+                setStatistics(enrichedData);
+            } catch (err) {
+                console.error('Error fetching data:', err);
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [navigate, selectedView, filterTrigger]); 
 
     const handleLogout = () => {
         localStorage.removeItem('accessToken');
@@ -83,7 +146,12 @@ const Statistics = () => {
     };
 
     const handleFilter = () => {
-        console.log('Filtering data...', startDate, endDate, selectedView);
+        setFilterTrigger(prev => prev + 1);
+    };
+
+    const handleViewChange = (e) => {
+        setSelectedView(e.target.value);
+        setFilterTrigger(prev => prev + 1); 
     };
 
     if (loading) {
@@ -97,19 +165,6 @@ const Statistics = () => {
     if (error) {
         return <div className="error-message">{error}</div>;
     }
-
-    const getTableHeading = () => {
-        switch(selectedView) {
-            case 'best-selling':
-                return 'Best Selling Movies';
-            case 'best-rated':
-                return 'Best Rated Movies';
-            case 'popular-genres':
-                return 'Most Popular Genres';
-            default:
-                return '';
-        }
-    };
 
     return (
         <div className="statistics-container">
@@ -160,7 +215,7 @@ const Statistics = () => {
                             <select 
                                 className="view-select"
                                 value={selectedView}
-                                onChange={(e) => setSelectedView(e.target.value)}
+                                onChange={handleViewChange}
                             >
                                 <option value="best-selling">Best selling movies</option>
                                 <option value="best-rated">Best rated movies</option>
@@ -170,15 +225,12 @@ const Statistics = () => {
                     </div>
                 </div>
 
-                <h2 className="table-heading">{getTableHeading()}</h2>
-
                 {selectedView === 'popular-genres' ? (
                     <div className="statistics-table">
                         <table>
                             <thead>
                                 <tr>
                                     <th>Genre</th>
-                                    <th>Genre ID</th>
                                     <th>Tickets Sold</th>
                                     <th></th>
                                 </tr>
@@ -187,12 +239,12 @@ const Statistics = () => {
                                 {statistics.map((stat) => (
                                     <tr key={stat.id}>
                                         <td>{stat.genre}</td>
-                                        <td>{stat.genreId}</td>
                                         <td>{stat.ticketsSold}</td>
                                         <td>
-                                            <div style={{ pointerEvents: 'none' }}>
-                                                <MovieDropdown movie={stat} />
-                                            </div>
+                                            <MovieDropdown 
+                                                movie={stat} 
+                                                disabled={true}
+                                            />
                                         </td>
                                     </tr>
                                 ))}
@@ -201,8 +253,12 @@ const Statistics = () => {
                     </div>
                 ) : (
                     <div className="movies-stats-list">
-                        {movieStats.map((movie) => (
-                            <MovieStatCard key={movie.id} movie={movie} />
+                        {statistics.map((movieStat) => (
+                            <MovieStatCard 
+                                key={movieStat.id} 
+                                movie={movieStat}
+                                showRating={selectedView === 'best-rated'}
+                            />
                         ))}
                     </div>
                 )}

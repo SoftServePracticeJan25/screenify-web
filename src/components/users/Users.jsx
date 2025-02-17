@@ -27,7 +27,6 @@ const Users = () => {
         const fetchUsers = async () => {
             try {
                 const response = await fetch(`${API_URL}/account/user-info`, {
-                    method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
@@ -35,11 +34,11 @@ const Users = () => {
                 });
 
                 if (!response.ok) {
-                    throw new Error('Error loading users');
+                    throw new Error('Failed to fetch user data');
                 }
 
-                const data = await response.json();
-                setUsers(data);
+                const userData = await response.json();
+                setUsers([userData]); 
             } catch (err) {
                 setError(err.message);
             } finally {
@@ -97,6 +96,7 @@ const Users = () => {
                     <li><a href="/rooms">Rooms</a></li>
                     <li><a href="/tickets">Tickets</a></li>
                     <li><a href="/reviews">Reviews</a></li>
+                    <li><a href="/statistics">Statistics</a></li>
                     <li><button onClick={handleLogout} className="logout-btn">LOG OUT</button></li>
                 </ul>
             </nav>
@@ -112,7 +112,8 @@ const Users = () => {
                             <tr>
                                 <th>№</th>
                                 <th>Username</th>
-                                <th>Tickets</th>
+                                <th>Email</th>
+                                <th>Role</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -121,7 +122,8 @@ const Users = () => {
                                 <tr key={user.id}>
                                     <td>{index + 1}</td>
                                     <td>{user.username}</td>
-                                    <td>{user.ticket}</td>
+                                    <td>{user.email}</td>
+                                    <td>{user.role}</td>
                                     <td>
                                         <UserDropdown
                                             user={user}

@@ -14,7 +14,7 @@ const Reviews = () => {
     const [error, setError] = useState('');
     const [filters, setFilters] = useState({
         movieId: '',
-        AppUserId: ''
+        AppUserId: '' 
     });
     const [appliedFilters, setAppliedFilters] = useState({
         movieId: '',
@@ -32,14 +32,14 @@ const Reviews = () => {
             try {
                 let url = `${API_URL}/review`;
                 const queryParams = [];
-
+                
                 if (appliedFilters.movieId && !isNaN(Number(appliedFilters.movieId))) {
                     queryParams.push(`movieId=${Number(appliedFilters.movieId)}`);
                 }
                 if (appliedFilters.AppUserId) {
                     queryParams.push(`AppUserId=${encodeURIComponent(appliedFilters.AppUserId)}`);
                 }
-
+                
                 if (queryParams.length > 0) {
                     url += `?${queryParams.join('&')}`;
                 }
@@ -59,8 +59,8 @@ const Reviews = () => {
 
                 const transformedReviews = reviewsData.map(review => ({
                     id: review.id,
-                    userId: review.appUserId,
-                    username: review.madeBy,
+                    userId: review.appUserId, 
+                    username: review.madeBy,   
                     userImage: "/api/placeholder/74/74",
                     movieId: review.movieId,
                     movieTitle: `Movie ${review.movieId}`,

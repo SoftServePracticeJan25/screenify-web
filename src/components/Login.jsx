@@ -25,7 +25,7 @@ const Login = () => {
     }, []);
 
     if (isAuthenticated) {
-        return <Navigate to="/movies" />;
+        return <Navigate to="/statistics" />;
     }
 
     const handleChange = (e) => {
@@ -56,7 +56,7 @@ const Login = () => {
                 localStorage.setItem('accessToken', data.accessToken);
                 localStorage.setItem('user', JSON.stringify(data.user));
 
-                navigate('/movies', { replace: true });
+                navigate('/statistics', { replace: true });
             } else {
                 setError(data.message || 'Login failed. Please check your credentials.');
             }

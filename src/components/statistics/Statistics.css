@@ -170,6 +170,7 @@
     background-color: #211D54;
     border-radius: 8px;
     overflow: hidden;
+    margin-top: 2rem;
 }
 
 .statistics-table th:nth-child(1), 

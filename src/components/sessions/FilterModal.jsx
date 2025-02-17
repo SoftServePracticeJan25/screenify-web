@@ -8,7 +8,7 @@ const FilterModal = ({ isOpen, onClose, onFilter }) => {
         endDate: '',
         startTime: '',
         endTime: '',
-        genreId: ''
+        genre: ''
     });
 
     if (!isOpen) return null;
@@ -73,7 +73,7 @@ const FilterModal = ({ isOpen, onClose, onFilter }) => {
                         <label>Genre</label>
                         <input 
                             type="text" 
-                            value={filterData.genreId}
+                            value={filterData.genre}
                             onChange={(e) => setFilterData(prev => ({ ...prev, genre: e.target.value }))}
                         />
                     </div>

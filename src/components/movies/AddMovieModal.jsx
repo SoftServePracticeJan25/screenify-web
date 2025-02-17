@@ -31,8 +31,8 @@ const AddMovieModal = ({ isOpen, onClose, onSave, editingMovie }) => {
                     image: editingMovie.image || '',
                     genres: formattedGenres,
                     duration: editingMovie.duration || '',
-                    cast: Array.isArray(editingMovie.cast) && editingMovie.cast.length > 0
-                        ? editingMovie.cast
+                    cast: Array.isArray(editingMovie.cast) && editingMovie.cast.length > 0 
+                        ? editingMovie.cast 
                         : [{ role: '', actor: '' }]
                 });
                 setImagePreview(editingMovie.image || null);
@@ -50,7 +50,7 @@ const AddMovieModal = ({ isOpen, onClose, onSave, editingMovie }) => {
         if (movieData.genres.length === 0) newErrors.genres = 'At least one genre is required';
         // Приводим duration к строке перед вызовом trim()
         if (!String(movieData.duration).trim()) newErrors.duration = 'Duration is required';
-
+        
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -130,7 +130,7 @@ const AddMovieModal = ({ isOpen, onClose, onSave, editingMovie }) => {
                 <button className="close-button" onClick={onClose}>
                     <IoMdClose />
                 </button>
-
+                
                 <div className="modal-body">
                     <div className="image-section">
                         <div className="image-upload-container">
@@ -138,11 +138,11 @@ const AddMovieModal = ({ isOpen, onClose, onSave, editingMovie }) => {
                                 <img src={imagePreview} alt="Movie preview" className="image-preview" />
                             ) : (
                                 <div className="image-placeholder">
-                                    <input
-                                        type="file"
-                                        accept="image/*"
-                                        onChange={handleImageChange}
-                                        id="image-upload"
+                                    <input 
+                                        type="file" 
+                                        accept="image/*" 
+                                        onChange={handleImageChange} 
+                                        id="image-upload" 
                                     />
                                     <label htmlFor="image-upload">Click to upload image</label>
                                 </div>
@@ -153,10 +153,10 @@ const AddMovieModal = ({ isOpen, onClose, onSave, editingMovie }) => {
                     <div className="details-section">
                         <div className="input-group">
                             <label htmlFor="title">Title</label>
-                            <input
+                            <input 
                                 id="title"
-                                type="text"
-                                value={movieData.title}
+                                type="text" 
+                                value={movieData.title} 
                                 onChange={(e) => {
                                     setMovieData(prev => ({ ...prev, title: e.target.value }));
                                     if (errors.title) setErrors(prev => ({ ...prev, title: '' }));
@@ -197,21 +197,21 @@ const AddMovieModal = ({ isOpen, onClose, onSave, editingMovie }) => {
                             <label>Cast</label>
                             {movieData.cast.map((member, index) => (
                                 <div key={index} className="cast-member">
-                                    <input
-                                        type="text"
-                                        placeholder="Role"
-                                        value={member.role}
-                                        onChange={(e) => handleCastChange(index, 'role', e.target.value)}
+                                    <input 
+                                        type="text" 
+                                        placeholder="Role" 
+                                        value={member.role} 
+                                        onChange={(e) => handleCastChange(index, 'role', e.target.value)} 
                                     />
-                                    <input
-                                        type="text"
-                                        placeholder="Actor"
-                                        value={member.actor}
-                                        onChange={(e) => handleCastChange(index, 'actor', e.target.value)}
+                                    <input 
+                                        type="text" 
+                                        placeholder="Actor" 
+                                        value={member.actor} 
+                                        onChange={(e) => handleCastChange(index, 'actor', e.target.value)} 
                                     />
                                     {movieData.cast.length > 1 && (
-                                        <button
-                                            className="remove-cast"
+                                        <button 
+                                            className="remove-cast" 
                                             onClick={() => handleRemoveCastMember(index)}
                                         >
                                             ×
