@@ -5,6 +5,8 @@ import UserDropdown from './UserDropdown';
 import DeleteConfirmationModal from '../movies/DeleteConfirmationModal';
 import UsersInfoModal from './UsersInfoModal';
 
+const API_URL = "https://screenify-fzh4dgfpanbrbeea.polandcentral-01.azurewebsites.net/api";
+
 const Users = () => {
     const navigate = useNavigate();
     const [users, setUsers] = useState([]);
@@ -22,33 +24,30 @@ const Users = () => {
             return;
         }
 
-        //Mock data for testing*
-        const mockUsers = [
-            {
-                id: 1,
-                username: "john_doe",
-                tickets: 5,
-                image: "https://randomuser.me/api/portraits/men/1.jpg"
-            },
-            {
-                id: 2,
-                username: "jane_smith",
-                tickets: 3,
-                image: "https://randomuser.me/api/portraits/women/2.jpg"
-            },
-            {
-                id: 3,
-                username: "bob_wilson",
-                tickets: 7,
-                image: ""
-            }
-        ];
+        const fetchUsers = async () => {
+            try {
+                const response = await fetch(`${API_URL}/account/user-info`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
 
-        //Simulate API call*
-        setTimeout(() => {
-            setUsers(mockUsers);
-            setLoading(false);
-        }, 1000);
+                if (!response.ok) {
+                    throw new Error('Error loading users');
+                }
+
+                const data = await response.json();
+                setUsers(data);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUsers();
     }, [navigate]);
 
     const handleLogout = () => {
@@ -122,7 +121,7 @@ const Users = () => {
                                 <tr key={user.id}>
                                     <td>{index + 1}</td>
                                     <td>{user.username}</td>
-                                    <td>{user.tickets}</td>
+                                    <td>{user.ticket}</td>
                                     <td>
                                         <UserDropdown
                                             user={user}

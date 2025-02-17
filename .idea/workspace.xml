@@ -4,9 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3327d5e6-56a2-45a4-afd4-083cd547a632" name="Changes" comment="scroll movie">
+    <list default="true" id="3327d5e6-56a2-45a4-afd4-083cd547a632" name="Changes" comment="rooms reviews sessions tickets movies">
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/users/Users.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/users/Users.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,6 +91,7 @@
       <workItem from="1739472186033" duration="11028000" />
       <workItem from="1739615933595" duration="5514000" />
       <workItem from="1739736701565" duration="3359000" />
+      <workItem from="1739792498779" duration="10890000" />
     </task>
     <task id="LOCAL-00001" summary="Ticket Get Delete requests, Reviews Get request filtering logic">
       <option name="closed" value="true" />
@@ -129,7 +133,87 @@
       <option name="project" value="LOCAL" />
       <updated>1739742434715</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="session info">
+      <option name="closed" value="true" />
+      <created>1739749398230</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1739749398230</updated>
+    </task>
+    <task id="LOCAL-00007" summary="rooms opening">
+      <option name="closed" value="true" />
+      <created>1739798039086</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1739798039086</updated>
+    </task>
+    <task id="LOCAL-00008" summary="rooms opening">
+      <option name="closed" value="true" />
+      <created>1739798059905</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1739798059905</updated>
+    </task>
+    <task id="LOCAL-00009" summary="rooms opening">
+      <option name="closed" value="true" />
+      <created>1739798092448</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1739798092448</updated>
+    </task>
+    <task id="LOCAL-00010" summary="rooms opening">
+      <option name="closed" value="true" />
+      <created>1739798213465</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1739798213465</updated>
+    </task>
+    <task id="LOCAL-00011" summary="rooms reviews sessions tickets movies">
+      <option name="closed" value="true" />
+      <created>1739805659114</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1739805659114</updated>
+    </task>
+    <task id="LOCAL-00012" summary="rooms reviews sessions tickets movies">
+      <option name="closed" value="true" />
+      <created>1739805674414</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1739805674414</updated>
+    </task>
+    <task id="LOCAL-00013" summary="rooms reviews sessions tickets movies">
+      <option name="closed" value="true" />
+      <created>1739805763177</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1739805763177</updated>
+    </task>
+    <task id="LOCAL-00014" summary="rooms reviews sessions tickets movies">
+      <option name="closed" value="true" />
+      <created>1739805784933</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1739805784933</updated>
+    </task>
+    <task id="LOCAL-00015" summary="rooms reviews sessions tickets movies">
+      <option name="closed" value="true" />
+      <created>1739805796897</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1739805796897</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -138,6 +222,9 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Ticket Get Delete requests, Reviews Get request filtering logic" />
     <MESSAGE value="scroll movie" />
-    <option name="LAST_COMMIT_MESSAGE" value="scroll movie" />
+    <MESSAGE value="session info" />
+    <MESSAGE value="rooms opening" />
+    <MESSAGE value="rooms reviews sessions tickets movies" />
+    <option name="LAST_COMMIT_MESSAGE" value="rooms reviews sessions tickets movies" />
   </component>
 </project>
