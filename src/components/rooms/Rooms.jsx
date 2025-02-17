@@ -1,174 +1,90 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Rooms.css';
-import { MdEventSeat } from "react-icons/md";
+import { MdEventSeat } from 'react-icons/md';
+
+const API_URL = 'https://screenify-fzh4dgfpanbrbeea.polandcentral-01.azurewebsites.net/api';
 
 const Rooms = () => {
   const navigate = useNavigate();
-  const [rooms, setRooms] = useState({});
+  const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
-    if (!token) {
-      navigate('/login');
-      return;
-    }
+    if (!token) return navigate('/login');
 
-    /*API 
-    { 
-  "Green Room": {
-    "color": "Green",
-    "seats": [
-      [
-        {"isBooked": false},
-        {"isBooked": false},
-        // ...
-      ],
-      // ...
-    ]
-  },
-  "Red Room": {
-    // ...
-  }
-}
-*/
-    // Mock room data
-    const initialRooms = {
-      'Green Room': {
-        color: 'Green',
-        seats: Array(6).fill().map(() => 
-          Array(8).fill().map(() => ({
-            isBooked: Math.random() > 0.7
-          }))
-        )
-      },
-      'Red Room': {
-        color: 'Red',
-        seats: Array(6).fill().map(() => 
-          Array(8).fill().map(() => ({
-            isBooked: Math.random() > 0.7
-          }))
-        )
-      },
-      'Blue Room': {
-        color: 'Blue',
-        seats: Array(6).fill().map(() => 
-          Array(8).fill().map(() => ({
-            isBooked: Math.random() > 0.7
-          }))
-        )
-      },
-      'Gold Room': {
-        color: 'Gold',
-        seats: Array(6).fill().map(() => 
-          Array(8).fill().map(() => ({
-            isBooked: Math.random() > 0.7
-          }))
-        )
+    const fetchRooms = async () => {
+      try {
+        const response = await fetch(`${API_URL}/rooms`, {
+          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+        });
+        if (!response.ok) throw new Error('Error loading rooms');
+        setRooms(await response.json());
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
     };
-
-    // Simulate API call with setTimeout
-    setTimeout(() => {
-      setRooms(initialRooms);
-      setLoading(false);
-    }, 1000);
+    fetchRooms();
   }, [navigate]);
 
-  const handleSeatClick = (roomName, rowIndex, seatIndex) => {
-    setRooms(prevRooms => {
-      const newRooms = { ...prevRooms };
-      newRooms[roomName].seats[rowIndex][seatIndex].isBooked = 
-        !newRooms[roomName].seats[rowIndex][seatIndex].isBooked;
-      return newRooms;
-    });
-  };
+  if (loading) return <div className="loading">Loading rooms...</div>;
+  if (error) return <div className="error-message">{error}</div>;
 
-  const handleLogout = () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('user');
-    navigate('/login');
-  };
+  const Room = ({ id, name, seatsAmount, cinemaTypeName = '' }) => {
+    const roomClass = `${cinemaTypeName.toLowerCase()}-room`; // Преобразуем тип зала в класс
 
-  if (loading) {
-    return <div className="loading"><p>Loading rooms...</p></div>;
-  }
-
-  if (error) {
-    return <div className="error-message">{error}</div>;
-  }
-  
-  const Room = ({ name, color, seats, onSeatClick }) => {
-
-    const freeSeats = seats.reduce((acc, row) => acc + row.filter(seat => !seat.isBooked).length, 0);
-    const purchasedSeats = seats.reduce((acc, row) => acc + row.filter(seat => seat.isBooked).length, 0);
-  
     return (
-      <div className={`room-container ${color.toLowerCase()}-room`}>
-        <h2>{name}</h2>
-        <div className="screen">Screen</div>
-        <div className="seats-container">
-          {seats.map((row, rowIndex) => (
-            <div key={rowIndex} className="seat-row">
-              {row.map((seat, seatIndex) => (
-                <div
-                  key={`${rowIndex}-${seatIndex}`}
-                  className={`seat ${seat.isBooked ? 'booked' : ''}`}
-                  onClick={() => onSeatClick(name, rowIndex, seatIndex)}
-                  title={`Row ${rowIndex + 1}, Seat ${seatIndex + 1}`}
-                >
-                  <MdEventSeat />
+        <div className={`room-container ${roomClass}`}>
+          <h2>{name}</h2>
+          <div className="screen">Screen</div>
+          <div className="seats-grid">
+            {Array.from({ length: 5 }).map((_, rowIndex) => (
+                <div key={rowIndex} className="seat-row">
+                  {Array.from({ length: 6 }).map((_, seatIndex) => (
+                      <div key={seatIndex} className={`seat ${roomClass}`}>
+                        <MdEventSeat />
+                      </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          ))}
+            ))}
+          </div>
+          <div className="room-info">
+            <p>ID: {id}</p>
+            <p>Seats: {seatsAmount}</p>
+            <p>Type: {cinemaTypeName}</p>
+          </div>
         </div>
-        <div className="room-info">
-          <p>Free Seats: {freeSeats}</p>
-          <p>Purchased Seats: {purchasedSeats}</p>
-        </div>
-      </div>
     );
   };
-  
-  return (
-    <div className="rooms-container">
-      <nav className="top-nav">
-        <div className="logo">
-          <span>screenify</span>
-        </div>
-        <ul className="nav-links">
-          <li><a href="/movies">Movies</a></li>
-          <li><a href="/sessions">Sessions</a></li>
-          <li><a href="/users">Users</a></li>
-          <li><a href="/rooms" className="active">Rooms</a></li>
-          <li><a href="/tickets">Tickets</a></li>
-          <li><a href="/reviews">Reviews</a></li>
-          <li><a href="/statistics">Statistics</a></li>
-          <li><button onClick={handleLogout} className="logout-btn">LOG OUT</button></li>
-        </ul>
-      </nav>
 
-      <div className="content">
-        <div className="rooms-header">
-          <h1>List of All Rooms</h1>
-        </div>
-        
+  return (
+      <div className="rooms-container">
+        <nav className="top-nav">
+          <div className="logo"><span>screenify</span></div>
+          <ul className="nav-links">
+            <li><a href="/movies">Movies</a></li>
+            <li><a href="/sessions">Sessions</a></li>
+            <li><a href="/users">Users</a></li>
+            <li><a href="/rooms" className="active">Rooms</a></li>
+            <li><a href="/tickets">Tickets</a></li>
+            <li><a href="/reviews">Reviews</a></li>
+            <li><a href="/statistics">Statistics</a></li>
+            <li><button onClick={() => localStorage.removeItem('accessToken') || navigate('/login')} className="logout-btn">LOG OUT</button></li>
+          </ul>
+        </nav>
+        <h1>List of All Rooms</h1>
         <div className="rooms-grid">
-          {Object.entries(rooms).map(([name, room]) => (
-            <Room
-              key={name}
-              name={name}
-              color={room.color}
-              seats={room.seats}
-              onSeatClick={handleSeatClick}
-            />
-          ))}
+          {rooms.length > 0 ? (
+              rooms.map(room => <Room key={room.id} {...room} />)
+          ) : (
+              <p className="no-data">No rooms available</p>
+          )}
         </div>
       </div>
-    </div>
   );
 };
 
